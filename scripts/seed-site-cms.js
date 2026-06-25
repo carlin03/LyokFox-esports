@@ -16,7 +16,8 @@ var dataPath = path.join(__dirname, '..', 'js', 'lyok-data.js');
 var code = fs.readFileSync(dataPath, 'utf8');
 var sandbox = vm.createContext({});
 vm.runInContext(code, sandbox);
-var data = sandbox.LYOK_DATA;
+vm.runInContext('var LYOK_DATA_DEFAULTS = JSON.parse(JSON.stringify(LYOK_DATA));', sandbox);
+var data = sandbox.LYOK_DATA_DEFAULTS || sandbox.LYOK_DATA;
 if (!data || typeof data !== 'object') {
   console.error('No se pudo leer LYOK_DATA');
   process.exit(1);
@@ -32,9 +33,12 @@ async function main() {
     headers: { apikey: key, Authorization: 'Bearer ' + key }
   });
   var rows = await check.json();
-  if (Array.isArray(rows) && rows[0] && rows[0].payload && Object.keys(rows[0].payload).length) {
-    console.log('site_cms ya tiene contenido — no se sobrescribe.');
-    return;
+  if (Array.isArray(rows) && rows[0] && rows[0].payload && rows[0].payload.data) {
+    var d = rows[0].payload.data;
+    if (d.teams && d.teams.length && d.news && d.news.articles && d.news.articles.length) {
+      console.log('site_cms ya tiene contenido — no se sobrescribe.');
+      return;
+    }
   }
 
   var res = await fetch(url + '/rest/v1/site_cms', {

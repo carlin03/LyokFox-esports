@@ -20,11 +20,18 @@
         resolve(window.supabase);
         return;
       }
-      var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-      s.onload = function () { resolve(window.supabase); };
-      s.onerror = function () { reject(new Error('No se pudo cargar Supabase JS')); };
-      document.head.appendChild(s);
+      if (window.__lyokSupabaseLoad) {
+        window.__lyokSupabaseLoad.then(resolve).catch(reject);
+        return;
+      }
+      window.__lyokSupabaseLoad = new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+        s.onload = function () { res(window.supabase); };
+        s.onerror = function () { rej(new Error('No se pudo cargar Supabase JS')); };
+        document.head.appendChild(s);
+      });
+      window.__lyokSupabaseLoad.then(resolve).catch(reject);
     });
   }
 
@@ -56,7 +63,7 @@
       twitter: row.twitter_handle || '',
       instagram: row.instagram_handle || '',
       country: row.country || 'ES',
-      favoriteGame: row.favorite_game || 'brawlStars',
+      favoriteGame: row.favorite_game || 'Clash Royale',
       points: row.points || 0,
       lifetime: row.lifetime_points || 0,
       streak: row.streak || 0,
@@ -69,12 +76,12 @@
   function profileToRow(p) {
     return {
       nickname: (p.nickname || '').trim().slice(0, 18),
-      bio: (p.bio || '').trim().slice(0, 160),
+      bio: (p.bio || '').trim().slice(0, 240),
       avatar_url: (p.avatar || '').trim(),
       twitter_handle: (p.twitter || '').replace(/^@/, '').trim(),
       instagram_handle: (p.instagram || '').replace(/^@/, '').trim(),
       country: p.country || 'ES',
-      favorite_game: p.favoriteGame || 'brawlStars',
+      favorite_game: p.favoriteGame || 'Clash Royale',
       points: +p.points || 0,
       lifetime_points: +p.lifetime || 0,
       streak: +p.streak || 0,
@@ -102,15 +109,17 @@
     });
   }
 
-  function signUp(email, password, nickname) {
+  function signUp(email, password, nickname, favoriteGame) {
     return ensureClient().then(function (sb) {
       if (!sb) throw new Error('Supabase no configurado');
       var nick = (nickname || '').trim().slice(0, 18);
       if (nick.length < 2) throw new Error('Apodo mínimo 2 caracteres');
+      var meta = { nickname: nick };
+      if (favoriteGame) meta.favorite_game = String(favoriteGame).slice(0, 40);
       return sb.auth.signUp({
         email: email.trim(),
         password: password,
-        options: { data: { nickname: nick } }
+        options: { data: meta }
       });
     });
   }

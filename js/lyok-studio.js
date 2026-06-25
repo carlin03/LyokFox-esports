@@ -1197,13 +1197,7 @@
     var s = saved || loadSaved();
     if (s.data) deepMerge(LYOK_DATA, s.data);
     if (s.visibility) {
-      var vis = s.visibility;
-      var falseCount = Object.keys(vis).filter(function (k) {
-        return typeof vis[k] !== 'object' && vis[k] === false;
-      }).length;
-      if (falseCount < 4) {
-        LYOK_DATA.visibility = Object.assign({}, LYOK_DATA.visibility || {}, s.visibility);
-      }
+      LYOK_DATA.visibility = Object.assign({}, LYOK_DATA.visibility || {}, s.visibility);
     }
     applyVisibility(LYOK_DATA.visibility);
     applySiteImages();
@@ -3083,8 +3077,12 @@
           applyOverrides(j);
           refresh();
           if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
+            if (!confirm('¿Importar y publicar este backup en la nube para todos los visitantes?')) {
+              toast('Backup importado (solo local)');
+              return;
+            }
             LyokCmsCloud.push(j, PIN).then(function (r) {
-              toast(r && r.ok ? 'Backup importado y publicado en la nube' : 'Backup importado (local)');
+              toast(r && r.ok ? 'Backup importado y publicado en la nube' : 'Backup importado (nube: ' + ((r && r.reason) || 'error') + ')');
             });
           } else {
             toast('Backup importado');
@@ -3284,15 +3282,22 @@
       previewData = null;
       deepMerge(LYOK_DATA, data);
       applyOverrides(loadSaved());
-      closePanel(false);
-      refresh();
+      var btn = shell.querySelector('#st-publish');
+      if (btn) btn.disabled = true;
+      var done = function (msg) {
+        if (btn) btn.disabled = false;
+        closePanel(false);
+        refresh();
+        toast(msg);
+      };
       if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
         LyokCmsCloud.push(saved, PIN).then(function (r) {
-          if (r && r.ok) toast('Publicado en la nube — todos lo verán');
-          else toast('Guardado local. Nube: ' + ((r && r.reason) || 'no disponible'));
+          done(r && r.ok ? 'Publicado en la nube — todos lo verán' : 'Guardado local. Nube: ' + ((r && r.reason) || 'no disponible'));
+        }).catch(function () {
+          done('Guardado local. Nube: error de red');
         });
       } else {
-        toast('Cambios publicados (solo en este navegador)');
+        done('Cambios publicados (solo en este navegador)');
       }
     };
 

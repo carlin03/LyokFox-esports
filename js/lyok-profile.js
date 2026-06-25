@@ -143,7 +143,7 @@
 
   function register(data) {
     if (usesCloud()) {
-      return LyokFoxAuth.signUp(data.email, data.password, data.nickname).then(function (res) {
+      return LyokFoxAuth.signUp(data.email, data.password, data.nickname, data.favoriteGame).then(function (res) {
         if (res.error) return { ok: false, error: res.error.message || 'No se pudo crear la cuenta.' };
         return syncCloudProfile().then(function (u) {
           return { ok: true, user: u, confirmEmail: !!(res.data && res.data.user && !res.data.session) };
@@ -371,18 +371,6 @@
   function handleAuthResult(res, onOk) {
     if (res && typeof res.then === 'function') {
       res.then(function (r) {
-        if (!r.ok) { toast(r.error); return; }
-        onOk(r);
-      });
-      return;
-    }
-    if (!res.ok) { toast(res.error); return; }
-    onOk(res);
-  }
-
-  function handleAuthResult(res, onOk) {
-    if (res && typeof res.then === 'function') {
-      res.then(function (r) {
         if (!r || !r.ok) {
           toast((r && r.error) || 'Error');
           return;
@@ -440,8 +428,11 @@
         favoriteGame: fd.get('favoriteGame')
       });
       handleAuthResult(res, function (r) {
-        if (r.confirmEmail) toast('Revisa tu email para confirmar la cuenta.');
-        else toast('Perfil creado — ¡bienvenido a la camada!');
+        if (r.confirmEmail) {
+          toast('Revisa tu email para confirmar la cuenta.');
+          return;
+        }
+        toast('Perfil creado — ¡bienvenido a la camada!');
         renderCuenta(root);
       });
     });
@@ -774,15 +765,31 @@
           email: document.getElementById('reg-email').value,
           password: document.getElementById('reg-password').value
         }), function (r) {
-          if (r.confirmEmail) toast('Revisa tu email para confirmar la cuenta.');
-          else toast('Perfil creado — ¡bienvenido!');
+          if (r.confirmEmail) {
+            toast('Revisa tu email para confirmar la cuenta.');
+            return;
+          }
+          toast('Perfil creado — ¡bienvenido!');
           location.href = 'cuenta.html';
         });
       });
     }
 
-    var resetBtn = document.querySelector('.auth-link-btn[data-auth-mode="reset"]');
-    if (resetBtn) resetBtn.hidden = true;
+    var resetBtn = document.getElementById('auth-reset-toggle');
+    if (resetBtn && usesCloud()) {
+      resetBtn.hidden = false;
+      resetBtn.addEventListener('click', function () {
+        var email = (document.getElementById('login-email') || {}).value || '';
+        if (!email.trim()) { toast('Escribe tu email arriba primero'); return; }
+        LyokFoxAuth.resetPassword(email).then(function () {
+          toast('Te enviamos un enlace para restablecer la contraseña');
+        }).catch(function (e) {
+          toast((e && e.message) || 'No se pudo enviar el email');
+        });
+      });
+    } else if (resetBtn) {
+      resetBtn.hidden = true;
+    }
 
     if (new URLSearchParams(location.search).get('mode') === 'register') {
       var regTab = pick && pick.querySelector('[data-auth-mode="register"]');
@@ -796,7 +803,7 @@
       if (page === 'cuenta') {
         var root = document.getElementById('cuenta-app');
         if (!root) return;
-        if (root.querySelector('#profile-edit-form, #auth-form-login')) return;
+        if (root.querySelector('#profile-edit-form, #profile-form-login, #auth-form-login')) return;
         renderCuenta();
       }
       if (page === 'login') initLoginPage();
@@ -821,5 +828,15 @@
   } else {
     boot();
   }
-  document.addEventListener('lyok:rerender', boot);
+  document.addEventListener('lyok:rerender', function () {
+    var page = document.body && document.body.dataset.page;
+    if (page === 'cuenta') {
+      var root = document.getElementById('cuenta-app');
+      if (root && root.querySelector('#profile-edit-form, #profile-form-login')) return;
+      renderCuenta();
+      return;
+    }
+    if (page === 'login') return;
+    notifyNav();
+  });
 })();

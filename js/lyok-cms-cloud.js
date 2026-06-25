@@ -6,6 +6,7 @@
   var SK_META = 'lyokfox_cms_cloud_meta_v1';
   var SK = 'lyokfox_studio_v3';
   var readClient = null;
+  var pullInFlight = null;
 
   function cfg() {
     return window.SUPABASE_CONFIG || { url: '', anonKey: '', enabled: false };
@@ -13,7 +14,7 @@
 
   function isConfigured() {
     var c = cfg();
-    return !!(c.enabled && c.url && c.anonKey);
+    return !!(c.enabled && c.url && c.anonKey && String(c.url).indexOf('TU-PROYECTO') < 0);
   }
 
   function readMeta() {
@@ -32,11 +33,18 @@
         resolve(window.supabase);
         return;
       }
-      var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-      s.onload = function () { resolve(window.supabase); };
-      s.onerror = function () { reject(new Error('No se pudo cargar Supabase')); };
-      document.head.appendChild(s);
+      if (window.__lyokSupabaseLoad) {
+        window.__lyokSupabaseLoad.then(resolve).catch(reject);
+        return;
+      }
+      window.__lyokSupabaseLoad = new Promise(function (res, rej) {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+        s.onload = function () { res(window.supabase); };
+        s.onerror = function () { rej(new Error('No se pudo cargar Supabase')); };
+        document.head.appendChild(s);
+      });
+      window.__lyokSupabaseLoad.then(resolve).catch(reject);
     });
   }
 
@@ -75,12 +83,13 @@
       window.applyStudioEnvelope(payload);
       return true;
     }
-    return applyToStorage(payload);
+    return false;
   }
 
   function pull(force) {
     if (!isConfigured()) return Promise.resolve(null);
-    return getClient().then(function (sb) {
+    if (pullInFlight && !force) return pullInFlight;
+    pullInFlight = getClient().then(function (sb) {
       if (!sb) return null;
       return sb.from('site_cms').select('payload, updated_at').eq('id', CMS_ROW_ID).maybeSingle();
     }).then(function (res) {
@@ -91,13 +100,16 @@
       if (!payload) return null;
       var meta = readMeta();
       var remoteAt = row.updated_at || '';
+      writeMeta({ updated_at: remoteAt, source: 'supabase' });
+      applyToRuntime(payload);
       if (!force && meta.updated_at && meta.updated_at === remoteAt) {
         return payload;
       }
-      writeMeta({ updated_at: remoteAt, source: 'supabase' });
-      applyToRuntime(payload);
       return payload;
-    }).catch(function () { return null; });
+    }).catch(function () { return null; }).finally(function () {
+      pullInFlight = null;
+    });
+    return pullInFlight;
   }
 
   function pullAndApply(force) {
@@ -107,9 +119,12 @@
         var raw = localStorage.getItem(SK);
         if (!raw) return null;
         var saved = JSON.parse(raw);
-        if (saved && saved.data) applyToRuntime(saved);
-        return saved;
-      } catch (e) { return null; }
+        if (saved && saved.data) {
+          applyToRuntime(saved);
+          return saved;
+        }
+      } catch (e) { /* ignore */ }
+      return null;
     });
   }
 
@@ -128,9 +143,15 @@
       },
       body: JSON.stringify(body)
     }).then(function (r) {
-      return r.json().then(function (j) {
+      return r.text().then(function (text) {
+        var j = {};
+        try { j = text ? JSON.parse(text) : {}; } catch (e) {
+          j = { ok: false, reason: 'invalid_response', detail: text.slice(0, 120) };
+        }
         if (r.ok && j.ok) {
           writeMeta({ updated_at: j.updated_at || new Date().toISOString(), source: 'supabase' });
+        } else if (!j.reason) {
+          j.reason = 'http_' + r.status;
         }
         return j;
       });

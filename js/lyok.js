@@ -647,16 +647,20 @@
     }
   }
 
+  var cmsMergedFromCloud = false;
+
   function loadPublicLyokData() {
-    resetLyokDataFromDefaults();
     if (isStudioFrame()) {
       applyLiveDraftFromStorage();
       return;
     }
+    if (cmsMergedFromCloud) return;
     var cloudOn = window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured();
     if (isLocalDev() && !useLocalCmsCache() && !cloudOn) {
+      resetLyokDataFromDefaults();
       return;
     }
+    resetLyokDataFromDefaults();
     try {
       var raw = localStorage.getItem('lyokfox_studio_v3');
       if (!raw) return;
@@ -729,31 +733,8 @@
   function sanitizeVisibility() {
     if (typeof LYOK_DATA === 'undefined' || !LYOK_DATA.visibility) return;
     var vis = LYOK_DATA.visibility;
-    vis.siteHeader = true;
-    vis.siteFooter = true;
-    vis.pageHero = true;
-    vis.historia = true;
-    vis.equipos = true;
-    vis.equiposTryouts = true;
-    vis.noticias = true;
-    vis.newsBreaking = false;
-    if (!isStudioFrame()) {
-      [
-        'hero', 'heroStats', 'heroCtas', 'ticker', 'matchPanel', 'matchStrip', 'brands',
-        'spotlight', 'disciplines', 'calendario', 'patrocinio', 'cta', 'seo', 'homeNews',
-        'noticias', 'historia', 'equipos', 'equiposTryouts', 'contactPage', 'contactInfo', 'contactForm',
-        'secHead-spotlight', 'secHead-disciplines', 'secHead-schedule', 'secHead-sponsor', 'secHead-seo', 'secHead-cta', 'secHead-homeNews',
-        'seoText', 'seoFaq'
-      ].forEach(function (k) { vis[k] = true; });
-    }
-    var keys = ['hero', 'spotlight', 'disciplines', 'calendario', 'patrocinio', 'cta', 'seo', 'noticias', 'historia', 'equipos', 'homeNews', 'equiposTryouts'];
-    var hidden = keys.filter(function (k) { return vis[k] === false; }).length;
-    if (hidden >= 3) {
-      keys.forEach(function (k) { vis[k] = true; });
-      ['secHead-spotlight', 'secHead-disciplines', 'secHead-schedule', 'secHead-sponsor', 'secHead-seo', 'secHead-cta', 'seoText', 'seoFaq'].forEach(function (k) {
-        vis[k] = true;
-      });
-    }
+    if (vis.siteHeader === false) vis.siteHeader = true;
+    if (vis.siteFooter === false) vis.siteFooter = true;
   }
 
   function collapseSparseSections() {
@@ -2053,7 +2034,7 @@
     if (window.LYOK_FX && !document.body.dataset.lyokFxReady) LYOK_FX.init();
     if (page === 'cuenta' && window.LyokProfile) {
       var cuentaApp = document.getElementById('cuenta-app');
-      if (!cuentaApp || !cuentaApp.querySelector('#profile-edit-form, #auth-form-login')) {
+      if (!cuentaApp || !cuentaApp.querySelector('#profile-edit-form, #profile-form-login, #auth-form-login')) {
         window.LyokProfile.render();
       }
     }
@@ -2136,7 +2117,10 @@
   function bootAfterReady() {
     var cms = window.LyokCmsCloud;
     if (cms && cms.isConfigured && cms.isConfigured() && cms.pullAndApply) {
-      cms.pullAndApply(true).finally(bootCore);
+      cms.pullAndApply(true).then(function (payload) {
+        cmsMergedFromCloud = !!(payload && payload.data);
+        bootCore();
+      }).catch(function () { bootCore(); });
     } else {
       bootCore();
     }
