@@ -3082,7 +3082,13 @@
           saveSaved(j);
           applyOverrides(j);
           refresh();
-          toast('Backup importado');
+          if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
+            LyokCmsCloud.push(j, PIN).then(function (r) {
+              toast(r && r.ok ? 'Backup importado y publicado en la nube' : 'Backup importado (local)');
+            });
+          } else {
+            toast('Backup importado');
+          }
         } catch (e) { alert('JSON inválido'); }
       };
       r.readAsText(f);
@@ -3117,6 +3123,22 @@
   }
 
   function openPanel() {
+    if (panelOpen) return;
+    var launch = function () {
+      openPanelCore();
+    };
+    if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
+      LyokCmsCloud.pullAndApply(true).then(function () {
+        applyOverrides(loadSaved());
+        previewData = JSON.parse(JSON.stringify(LYOK_DATA));
+        launch();
+      }).catch(launch);
+      return;
+    }
+    launch();
+  }
+
+  function openPanelCore() {
     if (panelOpen) return;
     panelOpen = true;
     previewViewMode = 'web';

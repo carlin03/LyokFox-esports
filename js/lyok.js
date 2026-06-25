@@ -619,27 +619,32 @@
 
   function mergeStudioDataSafe(savedData) {
     if (!savedData || typeof savedData !== 'object') return;
-    Object.keys(savedData).forEach(function (k) {
+    deepMergeLyokData(LYOK_DATA, savedData);
+  }
+
+  function deepMergeLyokData(target, source) {
+    if (!source || typeof source !== 'object') return;
+    Object.keys(source).forEach(function (k) {
       if (k === 'visibility') return;
-      var v = savedData[k];
+      var v = source[k];
       if (v && typeof v === 'object' && !Array.isArray(v)) {
-        LYOK_DATA[k] = LYOK_DATA[k] || {};
-        Object.keys(v).forEach(function (sk) {
-          var sv = v[sk];
-          if (sv && typeof sv === 'object' && !Array.isArray(sv)) {
-            LYOK_DATA[k][sk] = Object.assign(LYOK_DATA[k][sk] || {}, sv);
-          } else if (Array.isArray(sv)) {
-            if (sv.length) LYOK_DATA[k][sk] = JSON.parse(JSON.stringify(sv));
-          } else if (sv !== undefined) {
-            LYOK_DATA[k][sk] = sv;
-          }
-        });
+        target[k] = target[k] || {};
+        deepMergeLyokData(target[k], v);
       } else if (Array.isArray(v)) {
-        if (v.length) LYOK_DATA[k] = JSON.parse(JSON.stringify(v));
+        if (v.length) target[k] = JSON.parse(JSON.stringify(v));
       } else if (v !== undefined) {
-        LYOK_DATA[k] = v;
+        target[k] = v;
       }
     });
+  }
+
+  function applyStudioEnvelope(saved) {
+    if (!saved || !saved.data) return;
+    deepMergeLyokData(LYOK_DATA, saved.data);
+    if (saved.visibility && typeof saved.visibility === 'object') {
+      LYOK_DATA.visibility = Object.assign({}, LYOK_DATA.visibility || {}, saved.visibility);
+      applyVisibility(LYOK_DATA.visibility);
+    }
   }
 
   function loadPublicLyokData() {
@@ -648,7 +653,8 @@
       applyLiveDraftFromStorage();
       return;
     }
-    if (isLocalDev() && !useLocalCmsCache()) {
+    var cloudOn = window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured();
+    if (isLocalDev() && !useLocalCmsCache() && !cloudOn) {
       return;
     }
     try {
@@ -656,15 +662,7 @@
       if (!raw) return;
       var saved = JSON.parse(raw);
       if (!saved || !saved.data) return;
-      var d = saved.data;
-      var hasContent = (Array.isArray(d.teams) && d.teams.length) ||
-        (d.news && Array.isArray(d.news.articles) && d.news.articles.length) ||
-        (Array.isArray(d.nav) && d.nav.length);
-      if (!hasContent) return;
-      var cacheKey = 'lyokfox_cms_' + (LYOK.build || 'web');
-      if (sessionStorage.getItem(cacheKey) === raw) return;
-      mergeStudioDataSafe(d);
-      sessionStorage.setItem(cacheKey, raw);
+      applyStudioEnvelope(saved);
     } catch (e) { /* ignore corrupt cache */ }
   }
 
@@ -1990,9 +1988,10 @@
     return /(?:^|[?&])cms=local(?:&|$)/.test(location.search);
   }
 
-  /** Localhost = mismos datos que visitante limpio en lyokfox.vercel.app */
+  /** Localhost = mismos datos que producción si hay Supabase; si no, datos limpios */
   function ensureLocalhostProdParity() {
     if (!isLocalDev()) return;
+    if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) return;
     var build = LYOK.build || 'web';
     var flag = 'lyokfox_local_parity_' + build;
     if (sessionStorage.getItem(flag)) return;
@@ -2134,15 +2133,21 @@
     runPendingItemPreview();
   }
 
+  function bootAfterReady() {
+    var cms = window.LyokCmsCloud;
+    if (cms && cms.isConfigured && cms.isConfigured() && cms.pullAndApply) {
+      cms.pullAndApply(true).finally(bootCore);
+    } else {
+      bootCore();
+    }
+  }
+
   function boot() {
     try {
       if (isStudioFrame()) document.body.classList.add('studio-frame-page');
       ensureLocalhostProdParity();
-      if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
-        LyokCmsCloud.pull().finally(bootCore);
-      } else {
-        bootCore();
-      }
+      var profileReady = (window.LyokProfile && LyokProfile.ready) ? LyokProfile.ready() : Promise.resolve();
+      profileReady.then(bootAfterReady);
     } catch (err) {
       console.error('[LyokFox] Error al iniciar la web:', err);
       var header = document.getElementById('site-header');
@@ -2178,6 +2183,7 @@
   window.applyLyokVisibility = applyVisibility;
   window.applyPageMeta = applyPageMeta;
   window.applyCmsPreviewPayload = applyCmsPreviewPayload;
+  window.applyStudioEnvelope = applyStudioEnvelope;
   window.renderTicker = renderTicker;
   window.renderHeader = renderHeader;
 

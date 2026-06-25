@@ -68,7 +68,17 @@
     }
   }
 
-  function pull() {
+  function applyToRuntime(payload) {
+    if (!payload || !payload.data) return false;
+    applyToStorage(payload);
+    if (typeof window.applyStudioEnvelope === 'function') {
+      window.applyStudioEnvelope(payload);
+      return true;
+    }
+    return applyToStorage(payload);
+  }
+
+  function pull(force) {
     if (!isConfigured()) return Promise.resolve(null);
     return getClient().then(function (sb) {
       if (!sb) return null;
@@ -81,11 +91,26 @@
       if (!payload) return null;
       var meta = readMeta();
       var remoteAt = row.updated_at || '';
-      if (meta.updated_at && meta.updated_at === remoteAt) return payload;
-      applyToStorage(payload);
+      if (!force && meta.updated_at && meta.updated_at === remoteAt) {
+        return payload;
+      }
       writeMeta({ updated_at: remoteAt, source: 'supabase' });
+      applyToRuntime(payload);
       return payload;
     }).catch(function () { return null; });
+  }
+
+  function pullAndApply(force) {
+    return pull(force).then(function (payload) {
+      if (payload) return payload;
+      try {
+        var raw = localStorage.getItem(SK);
+        if (!raw) return null;
+        var saved = JSON.parse(raw);
+        if (saved && saved.data) applyToRuntime(saved);
+        return saved;
+      } catch (e) { return null; }
+    });
   }
 
   function push(saved, pin) {
@@ -117,6 +142,8 @@
   window.LyokCmsCloud = {
     isConfigured: isConfigured,
     pull: pull,
-    push: push
+    pullAndApply: pullAndApply,
+    push: push,
+    applyToRuntime: applyToRuntime
   };
 })();

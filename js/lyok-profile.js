@@ -14,6 +14,68 @@
     { id: 'logo', src: 'img/logo.jpg', label: 'Logo LyokFox' },
     { id: 'banner', src: 'img/banner-oficial.png', label: 'Banner club' }
   ];
+  var cloudUser = null;
+
+  function usesCloud() {
+    return !!(window.LyokFoxAuth && LyokFoxAuth.isConfigured && LyokFoxAuth.isConfigured());
+  }
+
+  function mapCloudProfile(p, email) {
+    var cd = (p && p.camadaData) || {};
+    return {
+      email: String(email || (p && p.email) || '').toLowerCase(),
+      nickname: (p && p.nickname) || 'Fox',
+      avatar: (p && p.avatar) || '',
+      bio: (p && p.bio) || '',
+      favoriteGame: (p && p.favoriteGame) || games()[0],
+      role: cd.role || 'fan',
+      twitter: (p && p.twitter) || '',
+      instagram: (p && p.instagram) || '',
+      discord: cd.discord || '',
+      points: (p && p.points) || 0,
+      created: cd.created || '',
+      _cloud: true
+    };
+  }
+
+  function syncCloudProfile() {
+    if (!usesCloud()) return Promise.resolve(null);
+    return LyokFoxAuth.getUser().then(function (user) {
+      if (!user) {
+        cloudUser = null;
+        notifyNav();
+        return null;
+      }
+      return LyokFoxAuth.fetchProfile().then(function (p) {
+        cloudUser = mapCloudProfile(p, user.email);
+        notifyNav();
+        return cloudUser;
+      }).catch(function () {
+        cloudUser = mapCloudProfile(null, user.email);
+        notifyNav();
+        return cloudUser;
+      });
+    });
+  }
+
+  if (usesCloud()) {
+    LyokFoxAuth.onAuthStateChange(function () {
+      syncCloudProfile().then(function () {
+        var page = document.body && document.body.dataset.page;
+        if (page === 'cuenta' || page === 'login') renderCuenta();
+      });
+    });
+  }
+
+  var readyPromise = null;
+  function getReadyPromise() {
+    if (!readyPromise) {
+      readyPromise = usesCloud()
+        ? LyokFoxAuth.ensureClient().then(function () { return syncCloudProfile(); })
+        : Promise.resolve(null);
+    }
+    return readyPromise;
+  }
 
   function esc(s) {
     return String(s || '')
@@ -68,16 +130,26 @@
   }
 
   function currentUser() {
+    if (usesCloud() && cloudUser) return cloudUser;
     var email = getSessionEmail();
     if (!email) return null;
     return loadUsers().find(function (u) { return u.email === email; }) || null;
   }
 
   function isLoggedIn() {
+    if (usesCloud() && cloudUser) return true;
     return !!currentUser();
   }
 
   function register(data) {
+    if (usesCloud()) {
+      return LyokFoxAuth.signUp(data.email, data.password, data.nickname).then(function (res) {
+        if (res.error) return { ok: false, error: res.error.message || 'No se pudo crear la cuenta.' };
+        return syncCloudProfile().then(function (u) {
+          return { ok: true, user: u, confirmEmail: !!(res.data && res.data.user && !res.data.session) };
+        });
+      });
+    }
     var email = String(data.email || '').trim().toLowerCase();
     var password = String(data.password || '');
     var nickname = String(data.nickname || '').trim();
@@ -114,6 +186,14 @@
   }
 
   function login(email, password) {
+    if (usesCloud()) {
+      return LyokFoxAuth.signIn(email, password).then(function (res) {
+        if (res.error) return { ok: false, error: res.error.message || 'Email o contraseña incorrectos.' };
+        return syncCloudProfile().then(function (u) {
+          return { ok: true, user: u };
+        });
+      });
+    }
     var e = String(email || '').trim().toLowerCase();
     var user = loadUsers().find(function (u) { return u.email === e; });
     if (!user || user.password !== hashPass(String(password || ''))) {
@@ -124,11 +204,48 @@
   }
 
   function logout() {
+    if (usesCloud()) {
+      return LyokFoxAuth.signOut().then(function () {
+        cloudUser = null;
+        notifyNav();
+        return { ok: true };
+      });
+    }
     setSession(null);
     return { ok: true };
   }
 
+  function logoutSync() {
+    var r = logout();
+    if (r && typeof r.then === 'function') return r;
+    return Promise.resolve(r);
+  }
+
   function updateProfile(patch) {
+    if (usesCloud()) {
+      var user = currentUser();
+      if (!user) return Promise.resolve({ ok: false, error: 'No has iniciado sesión.' });
+      var next = {
+        nickname: patch.nickname != null ? patch.nickname : user.nickname,
+        bio: patch.bio != null ? patch.bio : user.bio,
+        avatar: patch.avatar != null ? patch.avatar : user.avatar,
+        favoriteGame: patch.favoriteGame != null ? patch.favoriteGame : user.favoriteGame,
+        twitter: patch.twitter != null ? patch.twitter : user.twitter,
+        instagram: patch.instagram != null ? patch.instagram : user.instagram,
+        camadaData: {
+          role: patch.role != null ? patch.role : user.role,
+          discord: patch.discord != null ? patch.discord : user.discord,
+          created: user.created || new Date().toISOString()
+        }
+      };
+      return LyokFoxAuth.saveProfile(next).then(function (p) {
+        cloudUser = mapCloudProfile(p, user.email);
+        notifyNav();
+        return { ok: true, user: cloudUser };
+      }).catch(function (e) {
+        return { ok: false, error: (e && e.message) || 'No se pudo guardar.' };
+      });
+    }
     var user = currentUser();
     if (!user) return { ok: false, error: 'No has iniciado sesión.' };
     var users = loadUsers();
@@ -251,6 +368,45 @@
     });
   }
 
+  function handleAuthResult(res, onOk) {
+    if (res && typeof res.then === 'function') {
+      res.then(function (r) {
+        if (!r.ok) { toast(r.error); return; }
+        onOk(r);
+      });
+      return;
+    }
+    if (!res.ok) { toast(res.error); return; }
+    onOk(res);
+  }
+
+  function handleAuthResult(res, onOk) {
+    if (res && typeof res.then === 'function') {
+      res.then(function (r) {
+        if (!r || !r.ok) {
+          toast((r && r.error) || 'Error');
+          return;
+        }
+        onOk(r);
+      }).catch(function (e) {
+        toast((e && e.message) || 'Error de conexión');
+      });
+      return;
+    }
+    if (!res || !res.ok) {
+      toast((res && res.error) || 'Error');
+      return;
+    }
+    onOk(res);
+  }
+
+  function profileStorageNote() {
+    if (usesCloud()) {
+      return texts().profileCloudNote || 'Tu perfil está guardado en la nube LyokFox — accesible desde cualquier dispositivo con tu cuenta.';
+    }
+    return texts().profileLocalNote || 'Los datos se guardan solo en este navegador.';
+  }
+
   function bindLoginForm(root) {
     var form = root.querySelector('#profile-form-login');
     if (!form || form.dataset.bound) return;
@@ -261,12 +417,10 @@
       if (err) err.textContent = '';
       var fd = new FormData(form);
       var res = login(fd.get('email'), fd.get('password'));
-      if (!res.ok) {
-        if (err) err.textContent = res.error;
-        return;
-      }
-      toast('¡Bienvenido, ' + res.user.nickname + '!');
-      renderCuenta(root);
+      handleAuthResult(res, function (r) {
+        toast('¡Bienvenido, ' + r.user.nickname + '!');
+        renderCuenta(root);
+      });
     });
   }
 
@@ -285,12 +439,11 @@
         password: fd.get('password'),
         favoriteGame: fd.get('favoriteGame')
       });
-      if (!res.ok) {
-        if (err) err.textContent = res.error;
-        return;
-      }
-      toast('Perfil creado — ¡bienvenido a la camada!');
-      renderCuenta(root);
+      handleAuthResult(res, function (r) {
+        if (r.confirmEmail) toast('Revisa tu email para confirmar la cuenta.');
+        else toast('Perfil creado — ¡bienvenido a la camada!');
+        renderCuenta(root);
+      });
     });
   }
 
@@ -311,10 +464,10 @@
       urlBtn.addEventListener('click', function () {
         var url = urlInput.value.trim();
         if (!url) { toast('Pega una URL de imagen'); return; }
-        var res = updateProfile({ avatar: url });
-        if (!res.ok) { toast(res.error); return; }
-        toast('Foto de perfil actualizada');
-        renderCuenta(root);
+        handleAuthResult(updateProfile({ avatar: url }), function () {
+          toast('Foto de perfil actualizada');
+          renderCuenta(root);
+        });
       });
     }
 
@@ -325,10 +478,10 @@
         if (!file) return;
         resizeImageFile(file, function (r) {
           if (!r.ok) { toast(r.error); fileInput.value = ''; return; }
-          var res = updateProfile({ avatar: r.data });
-          if (!res.ok) { toast(res.error); return; }
-          toast('Foto subida correctamente');
-          renderCuenta(root);
+          handleAuthResult(updateProfile({ avatar: r.data }), function () {
+            toast('Foto subida correctamente');
+            renderCuenta(root);
+          });
         });
       });
     }
@@ -336,19 +489,20 @@
     root.querySelectorAll('[data-avatar-preset]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var src = btn.getAttribute('data-avatar-preset');
-        var res = updateProfile({ avatar: src });
-        if (!res.ok) { toast(res.error); return; }
-        toast('Avatar actualizado');
-        renderCuenta(root);
+        handleAuthResult(updateProfile({ avatar: src }), function () {
+          toast('Avatar actualizado');
+          renderCuenta(root);
+        });
       });
     });
 
     var removeBtn = root.querySelector('#profile-avatar-remove');
     if (removeBtn) {
       removeBtn.addEventListener('click', function () {
-        updateProfile({ avatar: '' });
-        toast('Foto eliminada — se usa tu inicial');
-        renderCuenta(root);
+        handleAuthResult(updateProfile({ avatar: '' }), function () {
+          toast('Foto eliminada — se usa tu inicial');
+          renderCuenta(root);
+        });
       });
     }
   }
@@ -360,7 +514,7 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var fd = new FormData(form);
-      var res = updateProfile({
+      handleAuthResult(updateProfile({
         nickname: fd.get('nickname'),
         bio: fd.get('bio'),
         favoriteGame: fd.get('favoriteGame'),
@@ -368,26 +522,24 @@
         twitter: fd.get('twitter'),
         instagram: fd.get('instagram'),
         discord: fd.get('discord')
+      }), function () {
+        toast('Perfil guardado');
+        var ok = root.querySelector('#profile-save-ok');
+        if (ok) {
+          ok.hidden = false;
+          setTimeout(function () { ok.hidden = true; }, 2500);
+        }
+        renderCuenta(root);
       });
-      if (!res.ok) {
-        toast(res.error);
-        return;
-      }
-      toast('Perfil guardado');
-      var ok = root.querySelector('#profile-save-ok');
-      if (ok) {
-        ok.hidden = false;
-        setTimeout(function () { ok.hidden = true; }, 2500);
-      }
-      renderCuenta(root);
     });
 
     var out = root.querySelector('#profile-logout-btn');
     if (out) {
       out.addEventListener('click', function () {
-        logout();
-        toast('Sesión cerrada');
-        renderCuenta(root);
+        handleAuthResult(logoutSync(), function () {
+          toast('Sesión cerrada');
+          renderCuenta(root);
+        });
       });
     }
 
@@ -398,7 +550,7 @@
     var t = texts();
     root.innerHTML =
       '<div class="cuenta-hub">' +
-        '<div class="auth-warn auth-warn--local">Tu perfil se guarda en este navegador. Puedes crear cuenta, entrar y editarla cuando quieras.</div>' +
+        '<div class="auth-warn auth-warn--local">' + esc(profileStorageNote()) + '</div>' +
         '<div class="auth-mode-pick auth-mode-pick--gate" role="tablist">' +
           '<button type="button" class="auth-mode-card active" data-profile-tab="login" role="tab" aria-selected="true">' +
             '<span class="auth-mode-icon" aria-hidden="true">→</span><strong>' + esc(t.loginTitle || 'Iniciar sesión') + '</strong><em>Ya tengo cuenta</em></button>' +
@@ -533,7 +685,7 @@
               '</ul>' +
             '</div>' +
             '<div class="cuenta-side-card card cuenta-side-card--accent">' +
-              '<p class="cuenta-side-note">' + esc(t.profileLocalNote || 'Los datos se guardan solo en este navegador. Nadie más puede ver tu perfil.') + '</p>' +
+              '<p class="cuenta-side-note">' + esc(profileStorageNote()) + '</p>' +
             '</div>' +
           '</aside>' +
         '</div>' +
@@ -551,12 +703,24 @@
   }
 
   function initLoginPage() {
-    if (isLoggedIn()) {
-      location.href = 'cuenta.html';
+    var start = function () {
+      if (isLoggedIn()) {
+        location.href = 'cuenta.html';
+        return;
+      }
+      bindLoginPageUi();
+    };
+    if (usesCloud()) {
+      LyokFoxAuth.getSession().then(function (s) {
+        if (s) { location.href = 'cuenta.html'; return; }
+        start();
+      }).catch(start);
       return;
     }
+    start();
+  }
 
-    var pick = document.getElementById('auth-mode-pick');
+  function bindLoginPageUi() {
     if (pick) {
       pick.querySelectorAll('[data-auth-mode]').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -579,7 +743,9 @@
     var warn = document.getElementById('auth-config-warn');
     if (warn) {
       warn.hidden = false;
-      warn.innerHTML = '<strong>Perfil local.</strong><p>Crea tu cuenta o entra. Todo se guarda en este navegador.</p>';
+      warn.innerHTML = usesCloud()
+        ? '<strong>Perfil en la nube.</strong><p>Tu cuenta se guarda en LyokFox — entra desde cualquier dispositivo.</p>'
+        : '<strong>Perfil local.</strong><p>Crea tu cuenta o entra. Todo se guarda en este navegador.</p>';
     }
 
     var loginForm = document.getElementById('auth-form-login');
@@ -587,13 +753,13 @@
       loginForm.dataset.bound = '1';
       loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        var res = login(
+        handleAuthResult(login(
           document.getElementById('login-email').value,
           document.getElementById('login-password').value
-        );
-        if (!res.ok) { toast(res.error); return; }
-        toast('¡Bienvenido, ' + res.user.nickname + '!');
-        location.href = 'cuenta.html';
+        ), function (r) {
+          toast('¡Bienvenido, ' + r.user.nickname + '!');
+          location.href = 'cuenta.html';
+        });
       });
     }
 
@@ -602,14 +768,15 @@
       regForm.dataset.bound = '1';
       regForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        var res = register({
+        handleAuthResult(register({
           nickname: document.getElementById('reg-nickname').value,
           email: document.getElementById('reg-email').value,
           password: document.getElementById('reg-password').value
+        }), function (r) {
+          if (r.confirmEmail) toast('Revisa tu email para confirmar la cuenta.');
+          else toast('Perfil creado — ¡bienvenido!');
+          location.href = 'cuenta.html';
         });
-        if (!res.ok) { toast(res.error); return; }
-        toast('Perfil creado — ¡bienvenido!');
-        location.href = 'cuenta.html';
       });
     }
 
@@ -623,14 +790,16 @@
   }
 
   function boot() {
-    var page = document.body && document.body.dataset.page;
-    if (page === 'cuenta') {
-      var root = document.getElementById('cuenta-app');
-      if (!root) return;
-      if (root.querySelector('#profile-edit-form, #auth-form-login')) return;
-      renderCuenta();
-    }
-    if (page === 'login') initLoginPage();
+    getReadyPromise().then(function () {
+      var page = document.body && document.body.dataset.page;
+      if (page === 'cuenta') {
+        var root = document.getElementById('cuenta-app');
+        if (!root) return;
+        if (root.querySelector('#profile-edit-form, #auth-form-login')) return;
+        renderCuenta();
+      }
+      if (page === 'login') initLoginPage();
+    });
   }
 
   window.LyokProfile = {
@@ -641,7 +810,9 @@
     logout: logout,
     updateProfile: updateProfile,
     render: renderCuenta,
-    toast: toast
+    toast: toast,
+    ready: getReadyPromise,
+    usesCloud: usesCloud
   };
 
   if (document.readyState === 'loading') {
