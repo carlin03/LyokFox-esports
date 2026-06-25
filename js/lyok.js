@@ -6,7 +6,7 @@
     short: 'LyokFox',
     url: 'https://lyokfox.vercel.app',
     email: 'lyokfox@gmail.com',
-    build: '2026.06.25-web',
+    build: '2026.06.25-audit',
     est: 2020,
     tagline: 'La astucia del kitsune · El fuego de la competición',
     nav: [
@@ -641,8 +641,9 @@
   function applyStudioEnvelope(saved) {
     if (!saved || !saved.data) return;
     deepMergeLyokData(LYOK_DATA, saved.data);
-    if (saved.visibility && typeof saved.visibility === 'object') {
-      LYOK_DATA.visibility = Object.assign({}, LYOK_DATA.visibility || {}, saved.visibility);
+    var vis = saved.visibility || saved.data.visibility;
+    if (vis && typeof vis === 'object') {
+      LYOK_DATA.visibility = Object.assign({}, LYOK_DATA.visibility || {}, vis);
       applyVisibility(LYOK_DATA.visibility);
     }
   }
