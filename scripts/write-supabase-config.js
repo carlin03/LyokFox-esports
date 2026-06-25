@@ -10,7 +10,8 @@ var out = '/* Auto-generado en deploy — no editar a mano en producción */\n' 
   'window.SUPABASE_CONFIG = {\n' +
   '  url: ' + JSON.stringify(url) + ',\n' +
   '  anonKey: ' + JSON.stringify(key) + ',\n' +
-  '  enabled: ' + enabled + '\n' +
+  '  enabled: ' + enabled + ',\n' +
+  '  cloudOnly: ' + enabled + '\n' +
   '};\n';
 
 var target = path.join(__dirname, '..', 'js', 'supabase-config.js');

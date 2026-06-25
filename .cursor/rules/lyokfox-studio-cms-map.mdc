@@ -1,0 +1,126 @@
+---
+description: Mapa completo LyokFox Studio — cada editor, campo JSON, visibilidad y Supabase
+alwaysApply: true
+---
+
+# LyokFox Studio — mapa CMS (cada mini cosa)
+
+## Almacenamiento y nube
+
+| Capa | Dónde | Clave / tabla |
+|------|--------|----------------|
+| Runtime | `LYOK_DATA` (global JS) | `js/lyok-data.js` + merge Studio |
+| Local (solo dev) | `localStorage` | `lyokfox_studio_v3` → `{ data, visibility }` |
+| **Fuente de verdad (prod)** | Supabase | `site_cms` fila `id='main'`, columna `payload` |
+| Publicar | Studio → `LyokCmsCloud.push` → `POST /api/studio-publish` (PIN) | service_role en Vercel |
+| Leer web | `LyokCmsCloud.pullAndApply` al boot + Realtime `subscribe()` | `replaceStudioEnvelope` (reemplazo total, no merge) |
+| Prod sin nube | No fallback localStorage CMS | `isProdHost()` + `isConfigured()` → solo Supabase |
+| Cuentas (prod) | Supabase Auth + `profiles` | `cloudRequired()` bloquea auth local en producción |
+| Backup manual | Studio → Backup & restaurar | export/import JSON; import en nube pide confirmación |
+
+**Modo 100% nube:** En lyokfox.vercel.app / lyokfox-esports.vercel.app el CMS y las cuentas vienen **solo** de Supabase. Al pulsar **Publicar** en Studio → `site_cms` → Realtime actualiza todas las pestañas y dominios sin redeploy. GitHub/Vercel solo despliegan **código** (HTML/CSS/JS); el contenido editable vive en Supabase. Reseed: `npm run seed:cms:force`.
+
+**PIN Studio:** `lyokfox` (debe coincidir con `STUDIO_PIN` en Vercel).
+
+**Scripts v2 (orden):** `config.js` → `supabase-config.js` → `auth.js` → `lyok-cms-cloud.js` → `lyok-data.js` → `lyok-profile.js` → `lyok-fx.js` → `lyok.js` → `lyok-studio-loader.js`
+
+---
+
+## 27 secciones Studio → rutas `LYOK_DATA`
+
+### Identidad visual
+| Sección Studio | Ruta JSON | Campos editables |
+|----------------|-----------|------------------|
+| **theme** | `theme.*` | accent, accentBright, accentDim, gold, bg, bg2, surface, text, muted, headerBg, headerOpacity, headerTopOpacity, headerBlur, headerHeight, headerNavScale, headerBrandScale, cardGlass, grainOpacity, borderAccent, glowIntensity, radiusLg, tickerSpeed |
+| **typography** | `theme.type.*`, `theme.scale.*` | 14 colores texto (eyebrow, display, displayAccent, lead, sectionTitle, sectionSub, cardTitle, cardText, link, nav, navActive, statValue, statLabel, footer) + escalas display/section/body |
+| **effects** | `theme.effects.*`, `theme.animations` | mesh, dust, spotlight, scanline, heroCinema, embers, cardTilt, magneticBtns, counts/blur/strengths, perfProfile |
+| **media** | `site.banner`, `site.logo`, `site.heroOverlay`, `site.heroImageOpacity`, `site.heroEffects.*` | Banner/logo upload; kitsuneGlow, rays, floor, centerGlow |
+| **pagestyles** | `pageStyles.{inicio,noticias,historia,equipos,contacto,cuenta}.*` | banner, bannerOpacity, showHeroBanner, titleScale, leadScale, blockGap, bgImage, bgOpacity |
+
+### Inicio (`index.html`)
+| Sección | Ruta JSON | Campos |
+|---------|-----------|--------|
+| **hero** | `home.*`, `stats[]` | eyebrow, title, lead, ctaPrimary/Secondary, 4 stats (value, label, hidden) |
+| **match** | `nextMatch.*` | label, home, away, league, date, time, status, logos, links.x, links.calendar |
+| **ticker** | `ticker[]`, `home.brandsLabel`, `brands[]` | líneas ticker + franja ligas (name, logo) |
+| **sections** | `home.sections.*`, `home.ctaButtons`, `home.newsTeaser` | títulos por sección + CTA banner + enlace noticias |
+| **spotlight** | `spotlight[]` | num, title, text, href, accent, image |
+| **schedule** | `schedule[]` | game, vs, league, when, live, icon/logos |
+| **sponsor** | `sponsorTiers[]`, `sponsorUi.*` | planes partnership + tierCta, dossierCta, dossierHref |
+| **seo** | `home.seoText[]`, `home.seoKeywords[]`, `home.faq[]` | párrafos SEO, keywords, FAQ q/a |
+
+### Sitio global
+| Sección | Ruta JSON | Campos |
+|---------|-----------|--------|
+| **navmenu** | `nav[]` | key, label, href, cta, hidden |
+| **footer** | `footer.tagline`, `site.contact.*` | tagline, email, social twitter/instagram/fans |
+| **meta** | `meta.{inicio,noticias,historia,equipos,contacto,cuenta}.*` | title, description por página |
+| **ui** | `uiLabels.*` | cardExplore, cardRoster, cardEnter, newsReadMore, newsPanelClose, playerProfileClose, contactSuccess, contactSocial.* |
+| **pages** | `pages.{noticias,historia,equipos,cuenta,contacto}.*` | eyebrow, title, lead (hero de cada página) |
+
+### Páginas de contenido
+| Sección | Ruta JSON | Campos |
+|---------|-----------|--------|
+| **news** | `news.*`, `news.articles[]` | breaking, breakingLabel, sectionHead; por artículo: id, date, tag, cat, featured, hidden, title, excerpt, image, body[] |
+| **history** | `history.intro`, `history.storyBlocks[]`, `history.milestones[]`, `historyPage.actions[]` | intro stats; bloques layout/eyebrow/title/text/image/bgImage/style; hitos year/tag/title/text; CTAs fin |
+| **teams** | `teams[]`, `equiposPage.*` | name, tag, icon, about, tags[], stats[], hidden; sectionHead, tryouts CTA |
+| **players** | `rosters.clashRoyale[]`, `rosters.clubesPro[]` | name, role, note, bio, joined, twitter, highlights[], avatar, captain, hidden |
+| **contact** | `contactPage.*` | infoTitle, intro, formTitle, formLabels/Placeholders/Options, formNote, formSuccess |
+| **cuenta** | `cuentaPage.*` | ~50 strings: hub, login/register labels, profile, avatar, social, quick links, games[], profileRoles |
+
+### Sistema
+| Sección | Acción |
+|---------|--------|
+| **visibility** | toggles `visibility.*` (ver tabla abajo) |
+| **backup** | export/import JSON, restaurar original |
+
+---
+
+## Visibilidad (`visibility.*` → `data-cms-block`)
+
+**Global:** siteHeader, siteFooter, ticker, pageHero
+
+**Inicio portada:** hero, heroStats, heroCtas, matchPanel, matchStrip, brands
+
+**Solo títulos:** secHead-spotlight, secHead-disciplines, secHead-schedule, secHead-sponsor, secHead-seo, secHead-cta, secHead-homeNews
+
+**Secciones inicio:** spotlight (default false), disciplines, homeNews, calendario, seoText, seoFaq, seo, patrocinio, cta
+
+**Páginas:** noticias, newsBreaking (default false), historia, historyStory, equipos, equiposTryouts, contactPage, contactInfo, contactForm, cuentaGate, cuentaArea
+
+**Importante:** no forzar visibilidad en producción — respetar lo guardado en Studio/Supabase (`sanitizeVisibility` solo protege header/footer).
+
+---
+
+## Página → qué editar en Studio
+
+| HTML | Secciones Studio |
+|------|------------------|
+| `index.html` | media, pagestyles, hero, match, ticker, sections, spotlight, schedule, sponsor, seo |
+| `noticias.html` | pages (noticias), pagestyles, news |
+| `historia.html` | pages (historia), pagestyles, history |
+| `equipos.html` | pages (equipos), pagestyles, teams, players |
+| `contactanos.html` | pages (contacto), pagestyles, contact, sponsor |
+| `cuenta.html` | pages (cuenta), pagestyles, cuenta |
+| Todas | theme, typography, effects, navmenu, footer, meta, ui, visibility, backup |
+
+---
+
+## Flujo publicar (obligatorio para que todos vean cambios)
+
+1. Studio → editar → **Publicar cambios** (no solo cerrar)
+2. Toast: «Publicado en la nube — todos lo verán»
+3. Supabase `site_cms.payload` actualizado
+4. Visitantes: `pullAndApply` en boot → `applyStudioEnvelope` → `rerenderContent`
+
+**Importar backup:** pide confirmación antes de publicar a nube.
+
+---
+
+## Al tocar código Studio/CMS
+
+- `collectData()` solo lee DOM de la sección abierta; `getData()` tiene baseline completo
+- `applyStudioEnvelope` / `deepMergeLyokData`: merge profundo; arrays reemplazan si no vacíos
+- No duplicar lógica con `cms-sync.js` (legacy) — usar `lyok-cms-cloud.js`
+- Deploy: `git push` → Vercel; variables `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `STUDIO_PIN`
+- No commitear `js/supabase-config.js` (generado en build)

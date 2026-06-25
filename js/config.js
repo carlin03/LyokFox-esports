@@ -5,7 +5,7 @@ var SITE = {
   collective: 'camada',
   collectiveLabel: 'La camada kitsune',
   est: 2020,
-  build: '2026.06.25-audit',
+  build: '2026.06.25-web',
   banner: 'img/banner-oficial.png',
   email: 'lyokfox@gmail.com',
   /* Solo referencia deploy — la web usa rutas relativas en todos los entornos */

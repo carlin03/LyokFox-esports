@@ -29,14 +29,15 @@ var payload = {
 };
 
 async function main() {
+  var force = process.argv.indexOf('--force') >= 0;
   var check = await fetch(url + '/rest/v1/site_cms?id=eq.' + CMS_ROW_ID + '&select=id,payload', {
     headers: { apikey: key, Authorization: 'Bearer ' + key }
   });
   var rows = await check.json();
-  if (Array.isArray(rows) && rows[0] && rows[0].payload && rows[0].payload.data) {
+  if (!force && Array.isArray(rows) && rows[0] && rows[0].payload && rows[0].payload.data) {
     var d = rows[0].payload.data;
     if (d.teams && d.teams.length && d.news && d.news.articles && d.news.articles.length) {
-      console.log('site_cms ya tiene contenido — no se sobrescribe.');
+      console.log('site_cms ya tiene contenido — usa --force para sobrescribir.');
       return;
     }
   }
@@ -60,7 +61,7 @@ async function main() {
     console.error('Error al sembrar:', await res.text());
     process.exit(1);
   }
-  console.log('site_cms sembrado con LYOK_DATA completo.');
+  console.log(force ? 'site_cms sobrescrito con LYOK_DATA completo.' : 'site_cms sembrado con LYOK_DATA completo.');
 }
 
 main().catch(function (e) {

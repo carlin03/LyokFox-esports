@@ -20,6 +20,12 @@
     return !!(window.LyokFoxAuth && LyokFoxAuth.isConfigured && LyokFoxAuth.isConfigured());
   }
 
+  function cloudRequired() {
+    if (usesCloud()) return true;
+    return !!(window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured() &&
+      LyokCmsCloud.isProdHost && LyokCmsCloud.isProdHost());
+  }
+
   function mapCloudProfile(p, email) {
     var cd = (p && p.camadaData) || {};
     return {
@@ -142,6 +148,9 @@
   }
 
   function register(data) {
+    if (cloudRequired() && !usesCloud()) {
+      return { ok: false, error: 'Supabase no está activo. La web requiere cuenta en la nube.' };
+    }
     if (usesCloud()) {
       return LyokFoxAuth.signUp(data.email, data.password, data.nickname, data.favoriteGame).then(function (res) {
         if (res.error) return { ok: false, error: res.error.message || 'No se pudo crear la cuenta.' };
@@ -186,6 +195,9 @@
   }
 
   function login(email, password) {
+    if (cloudRequired() && !usesCloud()) {
+      return { ok: false, error: 'Supabase no está activo. La web requiere cuenta en la nube.' };
+    }
     if (usesCloud()) {
       return LyokFoxAuth.signIn(email, password).then(function (res) {
         if (res.error) return { ok: false, error: res.error.message || 'Email o contraseña incorrectos.' };

@@ -3082,7 +3082,10 @@
               return;
             }
             LyokCmsCloud.push(j, PIN).then(function (r) {
-              toast(r && r.ok ? 'Backup importado y publicado en la nube' : 'Backup importado (nube: ' + ((r && r.reason) || 'error') + ')');
+              if (r && r.ok && typeof window.lyokRerender === 'function') window.lyokRerender();
+              toast(r && r.ok
+                ? 'Backup publicado — visible en todos los sitios'
+                : 'Backup importado (nube: ' + ((r && r.reason) || 'error') + ')');
             });
           } else {
             toast('Backup importado');
@@ -3127,6 +3130,7 @@
     };
     if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
       LyokCmsCloud.pullAndApply(true).then(function () {
+        if (LyokCmsCloud.subscribe) LyokCmsCloud.subscribe();
         applyOverrides(loadSaved());
         previewData = JSON.parse(JSON.stringify(LYOK_DATA));
         launch();
@@ -3284,21 +3288,27 @@
       applyOverrides(loadSaved());
       var btn = shell.querySelector('#st-publish');
       if (btn) btn.disabled = true;
-      var done = function (msg) {
-        if (btn) btn.disabled = false;
-        closePanel(false);
-        refresh();
-        toast(msg);
-      };
-      if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
+      var cloudOn = window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured();
+      if (cloudOn) {
         LyokCmsCloud.push(saved, PIN).then(function (r) {
-          done(r && r.ok ? 'Publicado en la nube — todos lo verán' : 'Guardado local. Nube: ' + ((r && r.reason) || 'no disponible'));
+          if (btn) btn.disabled = false;
+          if (r && r.ok) {
+            closePanel(false);
+            refresh();
+            toast('Publicado — visible en lyokfox.vercel.app, lyokfox-esports y todos los dispositivos');
+          } else {
+            toast('No publicado en Supabase: ' + ((r && r.reason) || 'error'));
+          }
         }).catch(function () {
-          done('Guardado local. Nube: error de red');
+          if (btn) btn.disabled = false;
+          toast('Error de red — no se publicó en Supabase');
         });
-      } else {
-        done('Cambios publicados (solo en este navegador)');
+        return;
       }
+      if (btn) btn.disabled = false;
+      closePanel(false);
+      refresh();
+      toast('Cambios guardados (Supabase no activo en este entorno)');
     };
 
     setSection(activeSection);

@@ -9,6 +9,7 @@
     "open": "start http://localhost:3000",
     "stamp": "node scripts/stamp-build.js",
     "seed:cms": "node scripts/seed-site-cms.js",
+    "seed:cms:force": "node scripts/seed-site-cms.js --force",
     "predeploy": "node scripts/stamp-build.js web && node scripts/write-supabase-config.js",
     "deploy": "npm run predeploy && npx --yes vercel deploy --prod --yes --force --project v0-sports-team-website && npx --yes vercel deploy --prod --yes --force --project lyokfox-esports",
     "deploy:open": "npm run deploy && npm run open"

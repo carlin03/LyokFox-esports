@@ -6,7 +6,7 @@
     short: 'LyokFox',
     url: 'https://lyokfox.vercel.app',
     email: 'lyokfox@gmail.com',
-    build: '2026.06.25-audit',
+    build: '2026.06.25-web',
     est: 2020,
     tagline: 'La astucia del kitsune · El fuego de la competición',
     nav: [
@@ -638,6 +638,22 @@
     });
   }
 
+  function replaceStudioEnvelope(saved) {
+    if (!saved || !saved.data || typeof LYOK_DATA === 'undefined') return false;
+    resetLyokDataFromDefaults();
+    Object.keys(saved.data).forEach(function (key) {
+      if (saved.data[key] !== undefined) {
+        LYOK_DATA[key] = JSON.parse(JSON.stringify(saved.data[key]));
+      }
+    });
+    var vis = saved.visibility || saved.data.visibility;
+    if (vis && typeof vis === 'object') {
+      LYOK_DATA.visibility = JSON.parse(JSON.stringify(vis));
+      applyVisibility(LYOK_DATA.visibility);
+    }
+    return true;
+  }
+
   function applyStudioEnvelope(saved) {
     if (!saved || !saved.data) return;
     deepMergeLyokData(LYOK_DATA, saved.data);
@@ -657,6 +673,8 @@
     }
     if (cmsMergedFromCloud) return;
     var cloudOn = window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured();
+    var prodCloud = cloudOn && LyokCmsCloud.isProdHost && LyokCmsCloud.isProdHost();
+    if (prodCloud) return;
     if (isLocalDev() && !useLocalCmsCache() && !cloudOn) {
       resetLyokDataFromDefaults();
       return;
@@ -2106,7 +2124,9 @@
 
   function bootCore() {
     loadPublicLyokData();
-    ensureCoreContent(typeof LYOK_DATA_DEFAULTS !== 'undefined' ? LYOK_DATA_DEFAULTS : null);
+    if (!cmsMergedFromCloud) {
+      ensureCoreContent(typeof LYOK_DATA_DEFAULTS !== 'undefined' ? LYOK_DATA_DEFAULTS : null);
+    }
     initCmsPreviewBridge();
     rerenderContent();
     document.body.classList.add('ready', 'lyok-ready');
@@ -2120,6 +2140,7 @@
     if (cms && cms.isConfigured && cms.isConfigured() && cms.pullAndApply) {
       cms.pullAndApply(true).then(function (payload) {
         cmsMergedFromCloud = !!(payload && payload.data);
+        if (cms.subscribe) cms.subscribe();
         bootCore();
       }).catch(function () { bootCore(); });
     } else {
@@ -2169,6 +2190,7 @@
   window.applyPageMeta = applyPageMeta;
   window.applyCmsPreviewPayload = applyCmsPreviewPayload;
   window.applyStudioEnvelope = applyStudioEnvelope;
+  window.replaceStudioEnvelope = replaceStudioEnvelope;
   window.renderTicker = renderTicker;
   window.renderHeader = renderHeader;
 
