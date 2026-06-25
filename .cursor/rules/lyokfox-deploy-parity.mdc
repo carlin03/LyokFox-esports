@@ -1,0 +1,18 @@
+---
+description: Al cambiar código o diseño, publicar en todos los mirrors igual que localhost
+globs:
+alwaysApply: true
+---
+
+# Paridad localhost ↔ web pública
+
+Cuando cambies HTML, CSS, JS o CMS del Studio:
+
+1. **Sube la versión** — `npm run stamp` o deja que `predeploy` ejecute `scripts/stamp-build.js` (actualiza `SITE.build`, `?v=` en HTML y `@import` de CSS).
+2. **Publica en los mirrors** — `npm run deploy` despliega a:
+   - lyokfox.vercel.app (`v0-sports-team-website`)
+   - lyokfox-esports.vercel.app (`lyokfox-esports`)
+3. **Contenido del Studio** — guardar con sesión Supabase (`site_cms`) para que todas las webs muestren el mismo CMS; sin nube, cada visitante ve solo su `localStorage`.
+4. **Comprueba** — footer muestra `v{SITEBUILD}`; debe coincidir en localhost y en los tres dominios.
+
+No dejes solo localhost actualizado si el usuario pide que la web oficial refleje los cambios.

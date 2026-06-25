@@ -1,0 +1,202 @@
+/* ═══ RENDIMIENTO — solo quita lo que causa lag real al scroll ═══ */
+
+/* Loader FAB mínimo (antes de cargar lyok-studio.css) */
+.lyok-studio-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1200;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 90, 31, 0.35);
+  background: rgba(8, 8, 8, 0.94);
+  color: #f2f0ed;
+  font-family: var(--font-stat, system-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.lyok-studio-fab:hover { transform: translateY(-2px); }
+.lyok-studio-fab.is-loading { opacity: 0.65; pointer-events: none; }
+.lyok-studio-fab-ico { font-size: 1.1rem; line-height: 1; }
+
+/* Sin backdrop-filter en fixed/sticky = tirones al scroll */
+.site-header,
+.header,
+.header.scrolled,
+.lyok-live-ticker,
+.page-comunidad-v4 .comm-v4-bar,
+body.has-live-ticker .news-breaking,
+.profile-panel-drawer,
+.btn-glass,
+.cms-studio-panel,
+.toast,
+.news-article-panel,
+.lyok-overlay-panel,
+.page-noticias-v2 .news-breaking {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.lyok-studio,
+.lyok-studio-backdrop,
+.lyok-studio-shell,
+.lyok-studio-pin-box,
+.lyok-item-preview-box {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.lyok-lite .card,
+body.lyok-fx-lite .card,
+body.lyok-lite .match-panel,
+body.lyok-fx-lite .match-panel,
+body.lyok-lite .news-feed-card,
+body.lyok-fx-lite .news-feed-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.lyok-lite.page-fx::before,
+body.lyok-fx-lite.page-fx::before {
+  opacity: 0 !important;
+}
+
+body.lyok-lite .hero-portada-premium .hero-banner,
+body.lyok-fx-lite .hero-portada-premium .hero-banner,
+body.lyok-lite .hero-portada-logo,
+body.lyok-fx-lite .hero-portada-logo,
+body.lyok-lite .hero-portada-ring-outer,
+body.lyok-fx-lite .hero-portada-ring-outer,
+body.lyok-lite .hero-portada-ring-inner,
+body.lyok-fx-lite .hero-portada-ring-inner,
+body.lyok-lite .hero-portada-logo-glow,
+body.lyok-fx-lite .hero-portada-logo-glow,
+body.lyok-lite .hero-portada-rays,
+body.lyok-fx-lite .hero-portada-rays,
+body.lyok-lite .hero-portada-live-dot,
+body.lyok-fx-lite .hero-portada-live-dot {
+  animation: none !important;
+}
+
+body.lyok-studio-open {
+  overflow: hidden;
+}
+
+/* backdrop-filter en fixed/sticky = tirones al scroll (legacy comment) */
+
+.profile-panel-drawer {
+  background: rgba(8, 8, 10, 0.98) !important;
+}
+
+.page-comunidad-v4 .comm-v4-bar {
+  background: rgba(0, 0, 0, 0.97) !important;
+}
+
+body.has-live-ticker .news-breaking {
+  background: rgba(0, 0, 0, 0.94) !important;
+}
+
+/* Sin tilt 3D por mousemove (listeners en cada tarjeta) */
+.tilt-card,
+body.is-scrolling .tilt-card {
+  transform: none !important;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s !important;
+  will-change: auto !important;
+}
+
+/* Brillo en tarjetas: CSS puro en premium-global.css */
+
+/* Pausar animaciones pesadas mientras haces scroll */
+body.is-scrolling .fx-mesh-bg::before,
+body.is-scrolling .fx-mesh-bg::after,
+body.is-scrolling .ambient-orbs .orb,
+body.is-scrolling .hero-portada-premium .hero-banner,
+body.is-scrolling .hero-portada-rays,
+body.is-scrolling .embers .ember {
+  animation-play-state: paused !important;
+}
+
+/* Grain SVG = costoso en móvil */
+@media (max-width: 768px) {
+  .grain::before,
+  .grain::after {
+    display: none !important;
+  }
+}
+
+/* Secciones fuera de vista: menos trabajo de pintura (sin feed noticias — evita parpadeo) */
+.story-chapter,
+.milestone-card,
+.match-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 320px;
+}
+
+/* Ticker: sin text-shadow animado */
+.ticker-track span {
+  text-shadow: none !important;
+}
+
+.ticker-track {
+  will-change: transform;
+}
+
+/* Hover más ligero en tarjetas */
+body.lyok-ultra .portal-card:hover,
+body.lyok-ultra .game-card:hover,
+body.lyok-ultra .spotlight-card:hover,
+body.lyok-ultra .news-feed-card.card:hover,
+body.lyok-ultra .hist-chapter-item.card:hover,
+body.lyok-ultra .milestone-card.card:hover,
+body.lyok-ultra .equipos-player.card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Loader: sale rápido pero conserva look */
+.loader {
+  transition: opacity 0.25s ease, visibility 0.25s !important;
+}
+
+body.ready .loader {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Páginas ligeras: sin mesh ni spotlight */
+body.lyok-lite .fx-mesh-bg,
+body.lyok-lite .fx-spotlight {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .fx-spotlight {
+    display: none !important;
+  }
+
+  .embers {
+    opacity: 0.35 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-mesh-bg,
+  .fx-spotlight,
+  .embers {
+    display: none !important;
+  }
+
+  .ticker-track {
+    animation: none !important;
+  }
+}

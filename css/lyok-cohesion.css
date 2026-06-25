@@ -1,0 +1,461 @@
+/* ═══ LYOKFOX — COHESIÓN GLOBAL (super premium unificado) ═══ */
+
+/* ── Shell de página ── */
+.lyok-page,
+.comm-v4,
+.news-portal {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Banda intro unificada (comunidad · noticias · cuenta) ── */
+.lyok-intro-band,
+.comm-v4-bar,
+.news-portal-top,
+.cuenta-hero {
+  position: relative;
+  background: var(--intro-bg);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.22);
+}
+
+.lyok-intro-band::after,
+.comm-v4-bar::after,
+.news-portal-top::after,
+.cuenta-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--fox-orange), var(--gold), transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.comm-v4-bar {
+  padding: 14px 0 12px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+}
+
+.news-portal-top {
+  padding: calc(var(--section-y-tight) * 0.6) 0 var(--section-y-tight);
+}
+
+.cuenta-hero {
+  padding-bottom: var(--section-y-tight);
+}
+
+/* ── Eyebrows unificados ── */
+.eyebrow,
+.sec-eyebrow,
+.spotlight-eyebrow {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: var(--eyebrow-track);
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--fox-orange);
+  margin-bottom: 10px;
+}
+
+.sec-eyebrow {
+  color: var(--gray);
+  letter-spacing: 3px;
+}
+
+.spotlight-eyebrow {
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+}
+
+/* ── Títulos de página (compact intro) ── */
+.news-portal-head h1,
+.cuenta-hero-copy h1,
+.comm-v4-bar-title h1 {
+  font-family: var(--font-display);
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--stone);
+  margin: 0;
+}
+
+.news-portal-head h1,
+.cuenta-hero-copy h1 {
+  font-size: var(--title-page);
+}
+
+.comm-v4-bar-title h1 {
+  font-size: var(--title-bar);
+}
+
+.news-portal-head h1 em,
+.cuenta-hero-copy h1 em,
+.page-hero-content h1 em,
+.sec-head h2 em,
+.block-head h2 em {
+  font-style: normal;
+  background: var(--gradient-fire);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comm-v4-bar-intro .eyebrow {
+  justify-content: flex-start;
+  margin-bottom: 6px;
+}
+
+.comm-v4-bar-intro .eyebrow .line { width: 28px; }
+
+/* ── Títulos de sección ── */
+.block-head h2,
+.sec-head h2,
+.logros-head h2,
+.comm-v4-panel-head h2,
+.page-cta-inner h2 {
+  font-family: var(--font-display);
+  font-size: var(--title-section);
+  letter-spacing: 2px;
+  color: var(--stone);
+  line-height: 1.05;
+}
+
+.block-head,
+.sec-head,
+.logros-head {
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.block { padding: var(--section-y) 0; }
+.portal-section { padding: var(--section-y) 0; }
+.logros-strip { padding: calc(var(--section-y) * 0.9) 0; }
+.page-comunidad-v4 .comm-v4-panels {
+  padding: 6px 0 18px;
+}
+.news-portal { padding-bottom: var(--section-y); }
+
+/* ── Superficie de tarjeta unificada ── */
+.news-feed-card,
+.news-side-box,
+.news-article-panel,
+.cuenta-panel.active,
+.form.glass,
+.reward-card-v5,
+.pred-card-v5,
+.pred-hero-card,
+.shop-showcase-card,
+.shop-bar-v6,
+.arcade-card-v5,
+.social-hero-v5,
+.missions-hero-v5,
+.mission-row-v5,
+.x-post-card,
+.portal-card,
+.spotlight-card,
+.sponsor,
+.benefit-card,
+.sp-why-card,
+.sp-impact-card,
+.sp-trophy-card,
+.sp-tier-card,
+.sp-deliver-card,
+.sp-partner-card,
+.sp-dossier-inner,
+.eq-stat,
+.trophy-card,
+.milestone-card,
+.value-card,
+.player,
+.game-card,
+.match-card,
+.promo-v5,
+.shop-tip-v6,
+.pred-matchday-inner,
+.pred-rule-chip,
+.cv4-stat,
+.page-cta-inner,
+.ach-badge,
+.faq-item,
+.contact-info {
+  background: var(--card-bg);
+  border: 1px solid var(--border-glass);
+  clip-path: var(--clip-chamfer);
+  transition: transform 0.3s var(--ease-out), border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Chamfer en tarjetas principales */
+.news-feed-card,
+.news-side-box,
+.reward-card-v5,
+.pred-card-v5,
+.portal-card,
+.spotlight-card,
+.player,
+.game-card,
+.sponsor,
+.trophy-card,
+.milestone-card,
+.x-post-card,
+.shop-showcase-card,
+.arcade-card-v5,
+.mission-row-v5,
+.page-cta-inner {
+  overflow: hidden;
+}
+
+/* Hover unificado */
+.news-feed-card:hover,
+.reward-card-v5:hover,
+.pred-card-v5:hover,
+.portal-card:hover,
+.spotlight-card:hover,
+.player:hover,
+.game-card:hover,
+.sp-why-card:hover,
+.sp-tier-card:hover,
+.sp-partner-card:hover,
+.trophy-card:hover,
+.milestone-card:hover,
+.x-post-card:hover,
+.shop-showcase-card:hover,
+.arcade-card-v5:hover,
+.mission-row-v5:hover,
+.eq-stat:hover,
+.value-card:hover {
+  border-color: rgba(255, 140, 0, 0.38);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* Cuenta — panel como tarjeta premium */
+.cuenta-panel.active {
+  padding: clamp(20px, 3vw, 28px);
+  margin-bottom: 16px;
+}
+
+.cuenta-panel.active .cuenta-form {
+  background: transparent;
+  border: none;
+  clip-path: none;
+  padding: 0;
+}
+
+/* ── Tabs unificados (comunidad · cuenta · misiones · tienda) ── */
+.comm-v4-tab,
+.cuenta-tab,
+.mission-tab,
+.shop-cat-btn,
+.news-tag-btn {
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.comm-v4-tab:hover,
+.comm-v4-tab.active,
+.cuenta-tab:hover,
+.cuenta-tab.active,
+.mission-tab:hover,
+.mission-tab.active,
+.shop-cat-btn:hover,
+.shop-cat-btn.shop-cat-on,
+.news-tag-btn:hover,
+.news-tag-btn.news-tag-on,
+.news-tag-btn.active {
+  color: var(--stone);
+  border-color: rgba(255, 224, 51, 0.4);
+  background: rgba(255, 224, 51, 0.09);
+  box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.06);
+}
+
+/* ── Inputs unificados ── */
+.news-portal-tools input,
+.cuenta-field input,
+.cuenta-field textarea,
+.cuenta-field select,
+.cuenta-input-prefix,
+.promo-form input,
+#promo-input {
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-glass);
+  color: var(--stone);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.news-portal-tools input:focus,
+.cuenta-field input:focus,
+.cuenta-field textarea:focus,
+.cuenta-field select:focus,
+.promo-form input:focus,
+#promo-input:focus {
+  outline: none;
+  border-color: rgba(255, 140, 0, 0.45);
+  box-shadow: 0 0 0 2px rgba(255, 85, 0, 0.12);
+}
+
+/* ── CTA strips ── */
+.page-cta-strip,
+.page-cta-strip-compact {
+  clip-path: var(--clip-chamfer-lg);
+  border-top: 1px solid rgba(255, 140, 0, 0.15);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(255, 85, 0, 0.12), transparent),
+    linear-gradient(180deg, var(--black) 0%, var(--surface) 50%, var(--black) 100%);
+}
+
+.page-cta-inner {
+  padding: clamp(28px, 4vw, 40px);
+}
+
+/* ── Noticias — alinear con resto del sitio ── */
+.news-breaking {
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom: 1px solid rgba(255, 140, 0, 0.2);
+}
+
+.news-breaking-label {
+  color: var(--fox-orange);
+  font-family: var(--font-heading);
+  letter-spacing: 2px;
+}
+
+.news-feed-card h2 {
+  font-family: var(--font-heading);
+  color: var(--stone);
+}
+
+.news-side-box h3,
+.comm-subtitle,
+.games-weekly-title {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--stone);
+}
+
+/* ── Page heroes — línea de acento inferior ── */
+.page-hero-content::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  margin-top: 20px;
+  background: linear-gradient(90deg, var(--fox-orange), var(--gold));
+  opacity: 0.85;
+}
+
+.page-hero-short .page-hero-content::after {
+  margin-top: 14px;
+}
+
+/* ── Stats / chips ── */
+.cv4-stat,
+.hv3-stat,
+.eq-stat,
+.cuenta-kpi,
+.shop-tip-v6,
+.pred-rule-chip {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hv3-stat strong,
+.eq-stat strong,
+.cv4-stat strong {
+  color: var(--stone);
+}
+
+/* ── Comunidad bar layout ── */
+.comm-v4-bar-intro {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.comm-v4-bar-title {
+  flex-wrap: wrap;
+}
+
+.comm-v4-link-news {
+  color: var(--fox-orange);
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 140, 0, 0.25);
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+  transition: 0.2s;
+}
+
+.comm-v4-link-news:hover {
+  background: rgba(255, 85, 0, 0.12);
+  border-color: rgba(255, 140, 0, 0.45);
+}
+
+/* ── Reveal: páginas internas sin contenido invisible ── */
+body.lyok-ultra .page-inner .reveal-item,
+body.lyok-ultra .news-portal .reveal-item,
+body.lyok-ultra .lyok-page .reveal-item {
+  opacity: 1;
+  transform: none;
+}
+
+body.lyok-ultra .page-inner .reveal-item.show,
+body.lyok-ultra .news-portal .reveal-item.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* Home mantiene animación reveal dramática solo en hero */
+body.lyok-ultra.home-v4 .hero-v3 .reveal-item:not(.show) {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+}
+
+/* Inicio — scroll fluido, sin lag al bajar del hero */
+html:has(body.home-v4) {
+  scroll-behavior: auto;
+}
+
+body.home-v4 .hero-v3 {
+  contain: layout style;
+}
+
+body.home-v4 .home-spotlight {
+  margin-top: 0;
+  padding-top: 8px;
+}
+
+/* ── Footer coherente con header ── */
+.footer {
+  border-top: 1px solid rgba(255, 140, 0, 0.15);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .comm-v4-bar-title h1 { font-size: 1.65rem; }
+  .news-portal-top { padding-top: 20px; }
+}
+
+@media (max-width: 600px) {
+  .comm-v4-bar { padding: 10px 0 8px; }
+  .comm-v4-tabs { gap: 4px; }
+  .comm-v4-tab,
+  .cuenta-tab,
+  .mission-tab { padding: 7px 10px; font-size: 0.62rem; }
+}

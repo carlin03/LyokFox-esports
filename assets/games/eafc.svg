@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="EA Sports FC">
+  <defs>
+    <linearGradient id="fc-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#000"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="18" fill="url(#fc-bg)"/>
+  <rect x="8" y="8" width="104" height="104" rx="14" fill="none" stroke="#333" stroke-width="1"/>
+  <text x="60" y="42" text-anchor="middle" fill="#fff" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" letter-spacing="1">EA SPORTS</text>
+  <polygon points="60,48 72,68 48,68" fill="#fff"/>
+  <text x="60" y="92" text-anchor="middle" fill="#fff" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" letter-spacing="2">FC</text>
+  <text x="60" y="108" text-anchor="middle" fill="#888" font-family="Arial, sans-serif" font-size="9" letter-spacing="2">CLUBES PRO</text>
+</svg>

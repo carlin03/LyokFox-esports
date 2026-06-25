@@ -1,0 +1,197 @@
+/* ═══ AUDITORÍA COMUNIDAD + PRE-LAUNCH FIXES ═══ */
+
+/* Scroll fluido en toda la web */
+html {
+  scroll-behavior: auto;
+}
+
+body.is-scrolling .tilt-card {
+  transform: none !important;
+  transition: none !important;
+}
+
+/* ── Paneles: cero espacio fantasma ── */
+.page-comunidad-v4 .comm-v4-panels {
+  padding: 6px 0 18px;
+  min-height: 0;
+}
+
+.comm-v4-panel[hidden] {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  visibility: hidden !important;
+}
+
+.comm-v4-panel.active:not([hidden]) {
+  display: block;
+  animation: commPanelFade 0.25s ease-out;
+}
+
+@keyframes commPanelFade {
+  from { opacity: 0.92; }
+  to { opacity: 1; }
+}
+
+/* Comunidad: todo el contenido dinámico siempre visible */
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .reveal-item,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .pred-card-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .pred-hero-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .pred-hist-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .reward-card-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .shop-showcase-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .mission-row-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .x-post-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .arcade-card-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .social-hero-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .shop-bar-v6,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .missions-hero-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .pred-matchday-inner,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .pred-rule-chip,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .shop-tip-v6,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active .faq-item {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ── Predicciones: denso, sin huecos ── */
+.comm-v4-panel[data-panel="predicciones"] {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.comm-v4-panel[data-panel="predicciones"] .pred-matchday-v5 { margin-bottom: 0; }
+.comm-v4-panel[data-panel="predicciones"] .pred-rules-v6 { margin-bottom: 4px; }
+.comm-v4-panel[data-panel="predicciones"] .pred-hero-v5 { margin-bottom: 6px; }
+.comm-v4-panel[data-panel="predicciones"] .pred-hero-v5:empty { display: none; margin: 0; }
+
+.comm-v4-panel[data-panel="predicciones"] .pred-section-head-v5 {
+  margin: 8px 0 6px;
+  padding-bottom: 4px;
+}
+
+.comm-v4-panel[data-panel="predicciones"] .pred-section-head-v5[hidden] {
+  display: none;
+}
+
+.pred-grid-v6 {
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.pred-grid-v6:empty {
+  display: none;
+}
+
+.pred-history-v6 {
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.comm-empty,
+.comm-empty-inline {
+  grid-column: 1 / -1;
+  padding: 14px 16px;
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--gray);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed rgba(255, 140, 0, 0.25);
+  clip-path: var(--clip-chamfer);
+  text-align: center;
+}
+
+/* ── Tienda: compacta ── */
+.comm-v4-panel[data-panel="tienda"] .shop-shell-v6 { gap: 6px; }
+
+.shop-strip-row-v6:empty,
+.shop-strip-v6:empty {
+  display: none;
+}
+
+.shop-foot-v6 {
+  margin-top: 4px;
+}
+
+/* ── Juegos / misiones ── */
+.comm-panel-juegos .comm-v4-panel-head,
+.comm-panel-misiones .comm-v4-panel-head {
+  margin-bottom: 8px;
+}
+
+.comm-panel-juegos .comm-v4-panel-head h2,
+.comm-panel-misiones .comm-v4-panel-head h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.games-arcade-v5 { gap: 8px; margin-bottom: 8px; }
+.games-extras-v5 { gap: 8px; }
+
+/* ── Redes: rail + feed balanceado ── */
+.social-hero-v5 { margin-bottom: 10px; padding: 14px 16px; }
+.social-layout-v5 { gap: 10px; }
+.social-foot-v5 { margin-top: 8px; padding-top: 8px; }
+
+/* ── Barra sticky comunidad ── */
+.page-comunidad-v4 .comm-v4-bar {
+  padding: 10px 0 8px;
+}
+
+.page-comunidad-v4 .comm-v4-bar-stats {
+  width: 100%;
+}
+
+/* ── Ranking ── */
+.comm-v4-rank-grid {
+  gap: 14px;
+}
+
+/* ── Premium glow en paneles activos ── */
+.comm-v4-panel.active:not([hidden]) {
+  position: relative;
+}
+
+.comm-v4-panel.active:not([hidden])::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255, 85, 0, 0.06), transparent 70%);
+  opacity: 1;
+}
+
+/* ── Inner pages scroll offset ── */
+html:has(body.page-inner) {
+  scroll-behavior: auto;
+}
+
+.page-inner .page-hero {
+  overflow: hidden;
+}
+
+/* ── Responsive comunidad ── */
+@media (max-width: 900px) {
+  .social-layout-v5 { grid-template-columns: 1fr; }
+  .social-posts-v5 { max-height: 50vh; }
+  .pred-grid-v6 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .pred-grid-v6,
+  .pred-history-v6 { grid-template-columns: 1fr; }
+  .page-comunidad-v4 { scroll-padding-top: calc(var(--header-h) + var(--ticker-h) + 56px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comm-v4-panel.active:not([hidden]) {
+    animation: none;
+  }
+  body.home-v4 .hero-v3-bg .hero-banner {
+    animation: none;
+  }
+}

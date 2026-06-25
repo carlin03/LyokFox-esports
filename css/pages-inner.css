@@ -1,0 +1,289 @@
+/* ═══ LyokFox — páginas interiores (cohesión home-v4 · lyok-ultra) ═══ */
+
+.page-inner {
+  --inner-hero-title: clamp(2.15rem, 5vw, 3.25rem);
+  --inner-hero-lead: clamp(0.92rem, 1.75vw, 1.05rem);
+  --inner-sec-title: clamp(1.65rem, 3.5vw, 2.25rem);
+  --inner-sec-sub: clamp(0.88rem, 1.55vw, 0.96rem);
+  --section-pad-y: clamp(1.25rem, 3vw, 2rem);
+  /* Ritmo vertical interior: aire antes de la línea + antes del contenido */
+  --inner-hero-pad-top: clamp(0.75rem, 1.8vw, 1rem);
+  --inner-hero-pad-bottom: clamp(1.25rem, 3vw, 1.75rem);
+  --inner-after-hero: clamp(1.35rem, 3.2vw, 2rem);
+  --inner-block-gap: clamp(1rem, 2.2vw, 1.35rem);
+}
+
+/* ── Hero interior: franja de texto SIN banner (cero hueco vacío) ── */
+body.page-inner.lyok-ultra .page-hero-bg,
+body.page-inner.lyok-ultra .page-hero::before,
+body.page-inner.lyok-ultra .page-hero::after,
+body.page-inner.lyok-ultra .page-hero-pro::after {
+  display: none !important;
+}
+
+body.page-inner.lyok-ultra .page-hero,
+body.page-inner.lyok-ultra .page-hero.page-hero-pro {
+  min-height: 0 !important;
+  display: block;
+  align-items: unset;
+  padding: var(--inner-hero-pad-top) 0 var(--inner-hero-pad-bottom) !important;
+  margin: 0;
+  background: transparent;
+  border-bottom: 1px solid rgba(255, 90, 31, 0.14);
+}
+
+body.page-inner.lyok-ultra .page-hero .wrap::before,
+body.page-inner.lyok-ultra .page-hero .wrap::after {
+  display: none;
+}
+
+body.page-inner.lyok-ultra .page-hero--compact {
+  min-height: 0 !important;
+}
+
+body.page-inner.lyok-ultra .page-hero .eyebrow {
+  margin-bottom: 0.65rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+}
+
+/* Fondo de página opcional (Studio) */
+body.page-has-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(3, 3, 3, 0.72) 0%, rgba(3, 3, 3, 0.88) 55%, rgba(3, 3, 3, 0.96) 100%),
+    var(--page-bg-image, none) center / cover no-repeat;
+  opacity: var(--page-bg-opacity, 0.1);
+}
+
+body.page-inner.lyok-ultra.page-hero-banner .page-hero-bg,
+body.page-inner.lyok-ultra.page-hero-banner .page-hero-pro .page-hero-bg {
+  display: block !important;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+body.page-inner.lyok-ultra.page-hero-banner .page-hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+body.page-inner.lyok-ultra .page-hero .display {
+  font-family: var(--font-display);
+  font-size: calc(var(--inner-hero-title) * var(--page-hero-title-scale, 1));
+  line-height: 0.94;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem;
+  color: var(--type-display, var(--text));
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.85);
+}
+
+body.page-inner.lyok-ultra .page-hero .display em {
+  color: var(--type-display-accent, var(--accent-bright));
+  font-style: normal;
+}
+
+body.page-inner.lyok-ultra .page-hero .lead {
+  max-width: 42ch;
+  margin: 0;
+  padding-bottom: 0;
+  font-size: calc(var(--inner-hero-lead) * var(--page-hero-lead-scale, 1));
+  line-height: 1.55;
+  color: rgba(242, 240, 237, 0.78);
+}
+
+body.page-inner.lyok-ultra {
+  --inner-block-gap: calc(clamp(1rem, 2.2vw, 1.35rem) * var(--page-block-gap-scale, 1));
+}
+
+body.page-inner.lyok-ultra .page-hero-pro .page-hero-bg img {
+  display: none;
+}
+
+.page-inner .section {
+  padding: var(--section-pad-y) 0;
+}
+
+.page-inner main > .section:first-of-type,
+.page-inner #main-content > .section:first-of-type {
+  padding-top: var(--inner-after-hero);
+}
+
+.page-inner .section--alt {
+  background:
+    linear-gradient(180deg, rgba(255, 90, 31, 0.035) 0%, transparent 42%),
+    var(--bg);
+  border-top: none;
+}
+
+.page-inner .section + .section {
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.page-inner .page-hero .display em {
+  color: var(--type-display-accent, var(--accent-bright));
+  font-style: normal;
+}
+
+body.page-inner.lyok-ultra .sec-head {
+  margin-bottom: var(--inner-block-gap);
+}
+
+body.page-inner.lyok-ultra .sec-head .eyebrow {
+  margin-bottom: 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+}
+
+body.page-inner.lyok-ultra .sec-head .section-title {
+  font-size: var(--inner-sec-title);
+  letter-spacing: 0.04em;
+  line-height: 0.95;
+  margin-bottom: 0.45rem;
+}
+
+body.page-inner.lyok-ultra .sec-head .section-sub {
+  font-size: var(--inner-sec-sub);
+  line-height: 1.55;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.page-inner .sec-head {
+  margin-bottom: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+.page-inner .sec-head.center {
+  text-align: center;
+}
+
+.page-inner .sec-head .section-sub {
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.page-inner .cta-banner {
+  text-align: center;
+  padding: clamp(2rem, 5vw, 3rem);
+  border: 1px solid rgba(255, 90, 31, 0.18);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, rgba(12, 12, 12, 0.96), rgba(6, 6, 6, 0.98));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+}
+
+.page-inner .history-actions,
+.page-inner .contact-partnerships-cta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* ── Espaciado superior interior: pegado bajo hero (todas las páginas) ── */
+body.page-inner.lyok-ultra #main-content > .page-hero {
+  margin-bottom: 0;
+}
+
+body.page-inner.lyok-ultra #main-content > .page-hero + *,
+body.page-inner.lyok-ultra #main-content > .news-breaking + *,
+body.page-inner.lyok-ultra #main-content > .match-strip + *,
+body.page-inner.lyok-ultra #main-content > .brands-strip + * {
+  margin-top: 0;
+}
+
+body.page-inner.lyok-ultra .news-breaking {
+  padding: 0.45rem 0;
+  margin: 0;
+  border-top: 1px solid rgba(255, 90, 31, 0.12);
+  border-bottom: 1px solid rgba(255, 90, 31, 0.1);
+}
+
+body.page-inner.lyok-ultra .news-breaking-inner {
+  gap: 0.75rem;
+  font-size: 0.82rem;
+}
+
+body.page-inner.lyok-ultra #main-content > .section:first-of-type,
+body.page-inner.lyok-ultra #main-content > .news-breaking + .section {
+  padding-top: var(--inner-after-hero);
+  border-top: none;
+}
+
+body.page-inner.lyok-ultra .page-historia .section:first-of-type,
+body.page-inner.lyok-ultra .page-equipos .section:first-of-type,
+body.page-inner.lyok-ultra .page-contacto .section:first-of-type,
+body.page-inner.lyok-ultra .page-cuenta .section:first-of-type {
+  padding-top: var(--inner-after-hero);
+}
+
+/* Noticias — portal */
+body.page-inner.page-noticias-v2 .page-hero-noticias {
+  padding-bottom: var(--inner-hero-pad-bottom);
+}
+
+body.page-inner.page-noticias-v2 .news-feed-section {
+  padding-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+body.page-inner.page-noticias-v2 .news-breaking {
+  position: relative;
+  z-index: 11;
+}
+
+/* Historia */
+.page-historia .history-origin {
+  margin-bottom: clamp(0.65rem, 1.5vw, 0.9rem);
+  padding: clamp(0.85rem, 2vw, 1.15rem);
+  border: 1px solid rgba(255, 90, 31, 0.14);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, rgba(12, 12, 12, 0.95), rgba(6, 6, 6, 0.98));
+}
+
+/* Equipos */
+.page-equipos .equipos-hub-band {
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+/* Contacto */
+.page-contacto .contact-grid {
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* Cuenta — mismo anclaje que historia / equipos / contacto */
+body.page-inner.page-cuenta #main-content {
+  padding-top: calc(var(--header-h, 84px) + var(--ticker-h, 36px));
+}
+
+body.page-inner.page-cuenta:not(.has-ticker) #main-content {
+  padding-top: var(--header-h, 84px);
+}
+
+body.page-inner.lyok-ultra .page-cuenta .page-hero .wrap {
+  padding-top: 0.15rem;
+}
+
+.page-cuenta .cuenta-wrap {
+  max-width: min(920px, 92vw);
+  margin-inline: auto;
+}
+
+@media (max-width: 900px) {
+  .page-equipos .equipos-hub-band {
+    grid-template-columns: 1fr;
+  }
+
+  .page-equipos .equipos-hub-band__foot {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-equipos .equipos-hub-band__leagues {
+    justify-content: flex-start;
+  }
+}

@@ -1,0 +1,974 @@
+/* ── Shell: menú fijo siempre visible ── */
+@import url('perf-fluid.css');
+body.lyok-ultra .site-header.site-header--ready {
+  background: rgba(var(--header-bg-rgb, 3, 3, 3), 0.96);
+  border-bottom-color: rgba(255, 90, 31, 0.12);
+}
+
+body.lyok-ultra .site-header .brand .accent {
+  color: var(--accent-bright, var(--accent));
+  -webkit-text-fill-color: var(--accent-bright, var(--accent));
+}
+
+body.lyok-ultra .site-header .nav a {
+  font-family: var(--font-stat);
+  font-size: calc(0.84rem * var(--header-nav-scale, 1));
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--type-nav);
+  padding: calc(0.62rem * var(--header-nav-scale, 1)) calc(1rem * var(--header-nav-scale, 1));
+  white-space: nowrap;
+}
+
+body.lyok-ultra .site-header .nav a.nav-cta {
+  padding: calc(0.68rem * var(--header-nav-scale, 1)) calc(1.35rem * var(--header-nav-scale, 1)) !important;
+}
+
+body.lyok-ultra .site-header .nav-account {
+  font-size: calc(0.875rem * var(--header-nav-scale, 1));
+  padding: calc(0.52rem * var(--header-nav-scale, 1)) calc(1rem * var(--header-nav-scale, 1));
+}
+
+body.lyok-ultra .site-header .brand {
+  font-size: calc(1.45rem * var(--header-brand-scale, 1));
+}
+
+body.lyok-ultra .site-header .brand img {
+  width: calc(44px * var(--header-brand-scale, 1));
+  height: calc(44px * var(--header-brand-scale, 1));
+}
+
+body.lyok-ultra .site-header .nav a.is-active:not(.nav-cta) {
+  color: var(--type-nav-active);
+}
+
+@media (min-width: 901px) {
+  body.lyok-ultra .site-header .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+  }
+}
+
+
+/* ── Cintas en páginas interiores: ocultas (ahorro vertical) ── */
+body.page-inner .page-sub-strip.match-strip,
+body.page-inner .page-sub-strip.brands-strip {
+  display: none !important;
+}
+
+body.page-inner .page-sub-strip .brands-label {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 237, 0.45);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ── Hero interior: línea premium como home ── */
+body.page-inner.lyok-ultra .page-hero {
+  border-bottom-color: rgba(255, 90, 31, 0.18);
+}
+
+body.page-inner.lyok-ultra .page-hero-bg img {
+  opacity: 0.28;
+  filter: saturate(0.8) contrast(1.12) brightness(0.5);
+}
+
+/* ── Superficie unificada (card--schedule DNA) ── */
+body.lyok-ultra .lyok-surface,
+body.lyok-ultra .team-block.card,
+body.lyok-ultra .player-card.card,
+body.lyok-ultra .equipos-player.card,
+body.lyok-ultra .sp-tier-card.card,
+body.lyok-ultra .home-news-card.card,
+body.lyok-ultra .faq-item.card,
+body.lyok-ultra .cta-banner.card,
+body.lyok-ultra .equipos-stat.card,
+body.lyok-ultra .history-origin,
+body.lyok-ultra .history-origin.card,
+body.lyok-ultra .hist-chapter-item.card,
+body.lyok-ultra .hist-chapter-item.card,
+body.lyok-ultra .news-feed-card.card,
+body.lyok-ultra .history-chapter-card.card,
+body.lyok-ultra .milestone-card.card,
+body.lyok-ultra .contact-info.card,
+body.lyok-ultra .contact-form-wrap.card,
+body.lyok-ultra .cuenta-card {
+  background: linear-gradient(165deg, rgba(18, 12, 8, 0.92) 0%, rgba(6, 6, 6, 0.95) 100%);
+  border-color: rgba(255, 140, 0, 0.14);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.lyok-ultra .spotlight-card.card,
+body.lyok-ultra .tier.card {
+  background: linear-gradient(165deg, rgba(18, 12, 8, 0.92) 0%, rgba(6, 6, 6, 0.95) 100%);
+  border-color: rgba(255, 140, 0, 0.14);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.lyok-ultra .team-block.card::before,
+body.lyok-ultra .player-card.card::before,
+body.lyok-ultra .equipos-player.card::before,
+body.lyok-ultra .sp-tier-card.card::before,
+body.lyok-ultra .news-card.card::before,
+body.lyok-ultra .home-news-card.card::before,
+body.lyok-ultra .faq-item.card::before,
+body.lyok-ultra .cta-banner.card::before,
+body.lyok-ultra .equipos-stat.card::before,
+body.lyok-ultra .history-origin::before,
+body.lyok-ultra .history-origin.card::before,
+body.lyok-ultra .history-chapter-card.card::before,
+body.lyok-ultra .milestone-card.card::before,
+body.lyok-ultra .seo-faq-wrap.card::before,
+body.lyok-ultra .seo-about-text.card::before,
+body.lyok-ultra .contact-info.card::before,
+body.lyok-ultra .contact-form-wrap.card::before,
+body.lyok-ultra .cuenta-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent-bright));
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+body.lyok-ultra .team-block.card:hover,
+body.lyok-ultra .player-card.card:hover,
+body.lyok-ultra .equipos-player.card:hover,
+body.lyok-ultra .sp-tier-card.card:hover,
+body.lyok-ultra .history-chapter-card.card:hover,
+body.lyok-ultra .milestone-card.card:hover,
+body.lyok-ultra .news-card.card:hover,
+body.lyok-ultra .home-news-card.card:hover,
+body.lyok-ultra .equipos-stat.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 90, 31, 0.35);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 36px rgba(255, 90, 31, 0.1);
+}
+
+/* ── Equipos ── */
+body.lyok-ultra .team-block.card {
+  margin-bottom: 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  position: relative;
+  overflow: hidden;
+}
+
+body.lyok-ultra .player-card.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+body.lyok-ultra .player-card.card--captain {
+  border-color: rgba(212, 162, 78, 0.4);
+  box-shadow: 0 0 24px rgba(212, 162, 78, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.lyok-ultra .equipos-stat.card {
+  text-align: center;
+  padding: 1rem 0.85rem;
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+/* ── Noticias ── */
+body.lyok-ultra .news-card.card {
+  padding: 0;
+  overflow: hidden;
+}
+
+body.lyok-ultra .news-card.card .news-card-body {
+  padding: 1.25rem 1.35rem 1.35rem;
+}
+
+body.home-v4 .home-news-card.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.35rem 1.25rem;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+/* ── FAQ / SEO ── */
+body.lyok-ultra .faq-item.card {
+  position: relative;
+  overflow: hidden;
+}
+
+body.lyok-ultra .seo-about-text.card {
+  position: relative;
+}
+
+body.lyok-ultra .seo-grid aside .section-title {
+  margin-bottom: 1rem;
+}
+
+/* ── CTA banners (tryouts + cierre) ── */
+body.lyok-ultra .cta-banner.card {
+  max-width: var(--wrap);
+  margin-inline: auto;
+  text-align: center;
+  padding: clamp(2rem, 5vw, 3rem);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+body.lyok-ultra .cta-banner.card::before {
+  opacity: 1;
+  height: 2px;
+}
+
+body.lyok-ultra .cta-banner.card--accent {
+  border-color: rgba(255, 90, 31, 0.28);
+  background: linear-gradient(165deg, rgba(255, 90, 31, 0.1) 0%, rgba(8, 8, 8, 0.96) 48%);
+}
+
+/* ── Historia: origen alineado ── */
+body.page-historia .history-origin {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Grids unificados ── */
+body.lyok-ultra .page-inner .news-grid,
+body.lyok-ultra .page-inner .news-featured {
+  gap: 1.25rem;
+}
+
+body.lyok-ultra .page-inner #teams-list.equipos-pro-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 2rem);
+}
+
+/* ── Home: transición visual tras calendario ── */
+body.home-v4 #sobre-lyokfox {
+  border-top: 1px solid rgba(255, 140, 0, 0.1);
+}
+
+body.home-v4 #patrocinio .tier.card {
+  position: relative;
+  overflow: hidden;
+}
+
+body.page-inner .section .wrap > .sec-head:first-child {
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem);
+}
+
+@keyframes heroBannerKen {
+  0% { transform: scale(1.03) translateY(0); }
+  100% { transform: scale(1.09) translateY(-1%); }
+}
+
+body.page-inner .page-hero-pro {
+  position: relative;
+  overflow: hidden;
+}
+
+body.page-inner .page-hero-pro::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.45), transparent);
+  pointer-events: none;
+}
+
+body.page-inner .page-hero-pro .page-hero-bg img {
+  opacity: 0.22;
+  filter: saturate(0.75) contrast(1.08) brightness(0.48);
+  animation: none;
+  transform: none;
+}
+
+body.page-inner .page-hero-pro .display em {
+  color: var(--accent-bright);
+  font-style: normal;
+}
+
+/* ── Tipografía interior: ancla final (gana sobre .display global) ── */
+body.page-inner.lyok-ultra .page-hero .display {
+  font-size: var(--inner-hero-title, clamp(2.15rem, 5vw, 3.25rem)) !important;
+  line-height: 0.94;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem;
+}
+
+body.page-inner.lyok-ultra .page-hero .eyebrow {
+  font-size: 0.6875rem;
+  margin-bottom: 0.65rem;
+}
+
+body.page-inner.lyok-ultra .page-hero .lead {
+  font-size: var(--inner-hero-lead, clamp(0.92rem, 1.75vw, 1.05rem));
+  line-height: 1.55;
+  max-width: 42ch;
+}
+
+body.page-inner.lyok-ultra .sec-head .section-title {
+  font-size: var(--inner-sec-title, clamp(1.65rem, 3.5vw, 2.25rem));
+  line-height: 1;
+}
+
+body.page-inner.lyok-ultra .sec-head .section-sub {
+  font-size: var(--inner-sec-sub, clamp(0.88rem, 1.55vw, 0.96rem));
+}
+
+/* Ancla: cero banner / cero hueco en heroes interiores */
+body.page-inner.lyok-ultra .page-hero-bg,
+body.page-inner.lyok-ultra .page-hero-pro .page-hero-bg {
+  display: none !important;
+}
+
+body.page-inner.lyok-ultra .page-hero,
+body.page-inner.lyok-ultra .page-hero.page-hero-pro {
+  min-height: 0 !important;
+  padding: var(--inner-hero-pad-top, clamp(0.75rem, 1.8vw, 1rem)) 0 var(--inner-hero-pad-bottom, clamp(1.25rem, 3vw, 1.75rem)) !important;
+  display: block !important;
+  align-items: unset !important;
+}
+
+/* ═══ Modales overlay — capa centrada (noticias · historia · jugadores) ═══ */
+.lyok-overlay-panel,
+#news-article-panel,
+#player-profile-panel,
+#history-detail-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(0.75rem, env(safe-area-inset-top, 0px)) 1rem max(1rem, env(safe-area-inset-bottom, 0px));
+  background: rgba(3, 3, 3, 0.88);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.lyok-overlay-panel[hidden],
+#news-article-panel[hidden],
+#player-profile-panel[hidden],
+#history-detail-panel[hidden] {
+  display: none !important;
+}
+
+.lyok-overlay-backdrop,
+.news-article-backdrop,
+.player-panel-backdrop,
+.history-panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  cursor: pointer;
+  background: transparent;
+}
+
+.lyok-overlay-card,
+.news-article-card,
+.player-profile-card,
+.history-chapter-modal {
+  position: relative;
+  z-index: 1;
+  width: min(700px, 100%);
+  max-height: min(88vh, 920px);
+  overflow-y: auto;
+  margin: auto;
+  flex-shrink: 0;
+  padding: clamp(1.15rem, 3vw, 1.65rem);
+  background: linear-gradient(165deg, rgba(18, 12, 8, 0.97), rgba(6, 6, 6, 0.99));
+  border: 1px solid rgba(255, 140, 0, 0.24);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.7), 0 0 48px rgba(255, 90, 31, 0.08);
+}
+
+.lyok-overlay-close,
+.news-article-close,
+.player-panel-close,
+.history-panel-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid rgba(255, 140, 0, 0.25);
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--text);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: var(--radius);
+  z-index: 2;
+}
+
+body.news-panel-open,
+body.player-panel-open,
+body.history-panel-open {
+  overflow: hidden;
+}
+
+/* Player profile modal (equipos) */
+
+.player-profile-card .player-panel-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding-right: 2rem;
+}
+
+.player-profile-card .player-panel-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(255, 140, 0, 0.2);
+}
+
+.player-profile-card .player-panel-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-profile-card .player-panel-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  line-height: 1.05;
+  margin: 0.2rem 0;
+}
+
+.player-profile-card .player-panel-body p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: rgba(242, 240, 237, 0.82);
+  margin: 0 0 0.75rem;
+}
+
+.player-profile-card .player-panel-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(255, 140, 0, 0.12);
+}
+
+.player-profile-card {
+  width: min(640px, 100%);
+}
+
+body.lyok-ultra .spotlight-card.card,
+body.lyok-ultra .tier.card,
+body.lyok-ultra .card.card--schedule {
+  position: relative;
+  overflow: hidden;
+}
+
+body.lyok-ultra .tier.card {
+  padding: clamp(1.75rem, 4vw, 2.25rem);
+  border-radius: var(--radius-lg);
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+body.lyok-ultra .tier.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 90, 31, 0.35);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 0 36px rgba(255, 90, 31, 0.1);
+}
+
+body.lyok-ultra .tier.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent-bright));
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+body.lyok-ultra .page-inner .grid-2 .card,
+body.lyok-ultra .page-inner .grid-3 .card {
+  height: 100%;
+}
+
+body.lyok-ultra .seo-faq-wrap.card {
+  padding: clamp(1.35rem, 3.5vw, 2rem);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+body.lyok-ultra .history-chapter-card.card,
+body.lyok-ultra .milestone-card.card {
+  text-align: left;
+}
+
+/* Separadores entre secciones (ritmo home) */
+body.lyok-ultra .section + .section {
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+body.lyok-ultra.page-inner .section--alt {
+  border-top: 1px solid rgba(255, 90, 31, 0.1);
+}
+
+@media (max-width: 768px) {
+  body.page-inner .page-sub-strip.brands-strip {
+    padding: 0.5rem 0 0.6rem;
+  }
+}
+
+/* ── Noticias · feed tarjetas media ── */
+.page-noticias-v2 #news-feed .news-feed-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+.page-noticias-v2 #news-feed .news-feed-featured--duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+.page-noticias-v2 #news-feed .news-feed-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+.page-noticias-v2 #news-feed .news-feed-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+.page-noticias-v2 .news-feed-section > .wrap > .sec-head {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .page-noticias-v2 #news-feed .news-feed-featured--duo {
+    grid-template-columns: 1fr;
+  }
+
+  .page-noticias-v2 #news-feed .news-feed-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-lyok-band {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .footer-lyok-brand {
+    justify-content: center;
+  }
+
+  .footer-lyok-contact {
+    align-items: center;
+  }
+
+  .footer-lyok-social {
+    justify-content: center;
+  }
+
+  .footer-lyok-meta {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 540px) {
+  .page-noticias-v2 #news-feed .news-feed-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══ COHESIÓN — noticias · hitos · footer (mismo ADN card--schedule) ═══ */
+
+body.page-historia .history-milestones-head {
+  margin-top: clamp(0.85rem, 2vw, 1.25rem);
+}
+
+body.lyok-ultra .milestone-card.card {
+  padding: 1.35rem 1.2rem 1.25rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 10.5rem;
+}
+
+body.page-historia .milestone-card--key .milestone-year {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 1.85rem);
+  color: var(--accent);
+}
+
+body.page-historia .milestone-card--key .milestone-title {
+  font-family: var(--font-stat);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  font-weight: 600;
+}
+
+body.page-historia .milestone-card--key .milestone-text {
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+body.page-historia .history-origin {
+  margin-bottom: clamp(0.65rem, 1.5vw, 0.9rem);
+  padding: clamp(0.85rem, 2vw, 1.15rem);
+}
+
+body.page-historia .history-chapters-pro {
+  margin-top: clamp(0.5rem, 1.2vw, 0.75rem);
+}
+
+body.page-historia .hist-chapter-item {
+  padding: clamp(0.8rem, 1.8vw, 1rem) clamp(0.9rem, 2vw, 1.15rem);
+}
+
+body.page-historia .hist-chapter-title {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+body.page-historia .hist-chapter-teaser {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+body.page-historia .history-origin-lead {
+  font-size: 0.9rem;
+}
+
+body.lyok-ultra .milestone-card.card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease), border-color 0.35s, box-shadow 0.35s;
+}
+
+body.lyok-ultra .hist-chapter-item.card:hover,
+body.lyok-ultra .news-feed-card.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 90, 31, 0.32);
+}
+
+/* Noticias — feed: ritmo alineado con hero interior */
+body.page-noticias-v2 .news-feed-section {
+  padding: 0 0 clamp(1.25rem, 3vw, 2rem);
+}
+
+body.page-noticias-v2 #news-feed .news-feed-grid,
+body.page-noticias-v2 #news-feed .news-feed-featured--duo,
+body.page-noticias-v2 #news-feed .news-feed-rows,
+body.page-noticias-v2 #news-feed .news-feed-row {
+  gap: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+body.page-noticias-v2 #news-feed .news-feed-card-title {
+  font-size: clamp(1rem, 2vw, 1.22rem);
+}
+
+body.page-noticias-v2 #news-feed .news-feed-card-excerpt {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+body.lyok-ultra .news-feed-card.card {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+body.lyok-ultra .news-feed-card.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 90, 31, 0.32);
+}
+
+#news-breaking,
+body.page-noticias-v2 .news-breaking {
+  display: none !important;
+}
+
+/* Footer LyokFox — banda única cohesiva */
+body.lyok-ultra .site-footer--lyok {
+  margin-top: 0;
+  padding: 0;
+  background: var(--bg);
+  border-top: 1px solid rgba(255, 90, 31, 0.12);
+}
+
+body.lyok-ultra .footer-lyok-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.45), var(--gold), rgba(255, 140, 0, 0.45), transparent);
+  opacity: 0.8;
+}
+
+body.lyok-ultra .footer-lyok-band {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  padding: 0.85rem 0;
+}
+
+body.lyok-ultra .footer-lyok-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: inherit;
+  white-space: nowrap;
+}
+
+body.lyok-ultra .footer-lyok-brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  object-fit: contain;
+  border: none;
+  box-shadow: none;
+}
+
+body.lyok-ultra .footer-lyok-brand span {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+}
+
+body.lyok-ultra .footer-lyok-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 1.1rem;
+}
+
+body.lyok-ultra .footer-lyok-nav a {
+  font-family: var(--font-stat);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 237, 0.62);
+  transition: color 0.2s;
+}
+
+body.lyok-ultra .footer-lyok-nav a:hover {
+  color: var(--accent);
+}
+
+body.lyok-ultra .footer-lyok-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+}
+
+body.lyok-ultra .footer-lyok-mail {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-bright);
+  white-space: nowrap;
+}
+
+body.lyok-ultra .footer-lyok-mail:hover {
+  color: var(--gold);
+}
+
+body.lyok-ultra .footer-lyok-social {
+  display: flex;
+  gap: 0.4rem;
+}
+
+body.lyok-ultra .footer-lyok-social a {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.58rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 140, 0, 0.2);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.35);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+body.lyok-ultra .footer-lyok-social a:hover {
+  border-color: rgba(255, 90, 31, 0.4);
+  color: var(--accent);
+}
+
+body.lyok-ultra .footer-lyok-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  padding: 0.55rem 0 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.lyok-ultra .footer-lyok-copy,
+body.lyok-ultra .footer-lyok-build {
+  margin: 0;
+  font-size: 0.65rem;
+  color: rgba(242, 240, 237, 0.38);
+  line-height: 1.45;
+}
+
+body.lyok-ultra .footer-lyok-build a {
+  color: inherit;
+}
+
+body.lyok-ultra .footer-lyok-build a:hover {
+  color: var(--accent);
+}
+
+/* ── Fluidez: header sólido (sin blur al scroll) ── */
+body.lyok-ultra .site-header,
+body.lyok-ultra .site-header.is-scrolled {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(var(--header-bg-rgb, 3, 3, 3), 0.97) !important;
+}
+
+/* ── Cohesión interior: gaps unificados ── */
+body.page-inner .milestone-grid--cols4,
+body.page-inner .equipos-pro-list,
+body.page-inner .equipos-players-grid {
+  gap: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+body.page-inner .history-origin {
+  margin-bottom: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+body.page-inner .equipos-section-head,
+body.page-inner .history-milestones-head {
+  margin-bottom: var(--inner-block-gap, clamp(1rem, 2.2vw, 1.35rem));
+}
+
+body.page-inner .contact-pro-section .contact-grid {
+  gap: clamp(1.35rem, 3.5vw, 2.25rem);
+}
+
+body.page-inner .news-feed-card-excerpt,
+body.page-inner .hist-chapter-item-excerpt,
+body.page-inner .section-sub,
+body.page-inner .lead {
+  line-height: 1.55;
+}
+
+/* ═══ Rendimiento scroll — fluido sin parpadeos ═══ */
+
+/* Pausar animaciones pesadas mientras haces scroll */
+body.is-scrolling .fx-mesh-bg::before,
+body.is-scrolling .fx-mesh-bg::after,
+body.is-scrolling .hero-portada-premium .hero-banner,
+body.is-scrolling .hero-portada-rays,
+body.is-scrolling .embers .ember,
+body.is-scrolling .home-v4 .hero-portada-logo-ring,
+body.is-scrolling .ticker-track {
+  animation-play-state: paused !important;
+}
+
+body.is-scrolling.page-fx::before {
+  opacity: 0 !important;
+}
+
+/* Header: sin saltos de sombra al cruzar el umbral de scroll */
+body.lyok-ultra .site-header .brand,
+body.lyok-ultra .site-header .nav a,
+body.lyok-ultra .site-header .nav-account {
+  transition: color 0.2s ease;
+}
+
+/* Hover en cards solo con ratón (evita saltos al scroll táctil) */
+@media (hover: hover) and (pointer: fine) {
+  body.lyok-ultra .card:hover,
+  body.lyok-ultra .news-feed-card:hover,
+  body.lyok-ultra .spotlight-card:hover,
+  body.lyok-ultra .hist-chapter-item:hover,
+  body.lyok-ultra .milestone-card:hover,
+  body.lyok-ultra .equipos-pro-team:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@media (hover: none) {
+  body.lyok-ultra .card:hover,
+  body.lyok-ultra .news-feed-card:hover {
+    transform: none;
+  }
+}
+
+/* Ticker: composición estable */
+body.page-inner:not(.page-hero-banner) .page-hero-bg {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.page-inner.page-hero-banner .page-hero-bg {
+  visibility: visible;
+}
+
+/* Ticker: composición estable */
+.ticker-track {
+  will-change: transform;
+}
+
+body.is-scrolling .ticker-track {
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fx::before,
+  .fx-mesh-bg,
+  .fx-spotlight,
+  .embers,
+  .hero-portada-rays,
+  .hero-portada-premium .hero-banner {
+    display: none !important;
+  }
+
+  .ticker-track {
+    animation: none !important;
+  }
+}

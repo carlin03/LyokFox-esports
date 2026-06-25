@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "buildCommand": "node scripts/stamp-build.js web && node scripts/write-supabase-config.js",
+  "builds": [
+    { "src": "**", "use": "@vercel/static" }
+  ],
+  "redirects": [
+    { "source": "/inicio", "destination": "/index.html", "permanent": false },
+    { "source": "/secciones", "destination": "/index.html", "permanent": true },
+    { "source": "/secciones.html", "destination": "/index.html", "permanent": true },
+    { "source": "/sponsor", "destination": "/index.html", "permanent": true },
+    { "source": "/sponsor.html", "destination": "/index.html", "permanent": true },
+    { "source": "/comunidad", "destination": "/index.html", "permanent": true },
+    { "source": "/comunidad.html", "destination": "/index.html", "permanent": true },
+    { "source": "/historia", "destination": "/historia.html", "permanent": false },
+    { "source": "/equipos", "destination": "/equipos.html", "permanent": false },
+    { "source": "/contactanos", "destination": "/contactanos.html", "permanent": false },
+    { "source": "/contacto", "destination": "/contactanos.html", "permanent": false },
+    { "source": "/noticias", "destination": "/noticias.html", "permanent": false },
+    { "source": "/cuenta", "destination": "/cuenta.html", "permanent": false },
+    { "source": "/login", "destination": "/login.html", "permanent": false },
+    { "source": "/entrar", "destination": "/login.html", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/css/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/js/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/inicio", "destination": "/index.html" },
+    { "source": "/secciones", "destination": "/index.html" },
+    { "source": "/sponsor", "destination": "/index.html" },
+    { "source": "/comunidad", "destination": "/index.html" },
+    { "source": "/historia", "destination": "/historia.html" },
+    { "source": "/equipos", "destination": "/equipos.html" },
+    { "source": "/contactanos", "destination": "/contactanos.html" },
+    { "source": "/contacto", "destination": "/contactanos.html" },
+    { "source": "/noticias", "destination": "/noticias.html" },
+    { "source": "/cuenta", "destination": "/cuenta.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/entrar", "destination": "/login.html" }
+  ]
+}

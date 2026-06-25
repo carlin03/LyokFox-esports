@@ -1,0 +1,321 @@
+/* ═══ LYOKFOX PREMIUM GLOBAL V6 — toda la web ═══ */
+
+:root {
+  --premium-border: linear-gradient(135deg, rgba(255, 184, 0, 0.45), rgba(255, 85, 0, 0.25), rgba(255, 140, 0, 0.4));
+  --premium-glow: 0 0 40px rgba(255, 85, 0, 0.18), 0 12px 40px rgba(0, 0, 0, 0.45);
+  --premium-surface: linear-gradient(165deg, rgba(255, 255, 255, 0.06) 0%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Header / ticker → ver header-premium.css */
+
+body.lyok-ultra .ticker-track span {
+  text-shadow: 0 0 12px rgba(255, 140, 0, 0.25);
+}
+
+/* ── Botones premium ── */
+body.lyok-ultra .btn-primary {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 28px rgba(255, 85, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 184, 0, 0.35);
+}
+
+body.lyok-ultra .btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ultra-shine);
+  transform: translateX(-120%);
+  transition: transform 0.55s ease;
+  pointer-events: none;
+}
+
+body.lyok-ultra .btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+body.lyok-ultra .btn-glass {
+  border-color: rgba(255, 140, 0, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+body.lyok-ultra .btn-glass:hover {
+  border-color: rgba(255, 140, 0, 0.45);
+  background: rgba(255, 85, 0, 0.08);
+}
+
+/* ── Tarjetas glass + borde fuego ── */
+body.lyok-ultra .portal-card,
+body.lyok-ultra .game-card,
+body.lyok-ultra .spotlight-card,
+body.lyok-ultra .stat-card,
+body.lyok-ultra .match-card,
+body.lyok-ultra .milestone-card,
+body.lyok-ultra .news-feed-card,
+body.lyok-ultra .reward-card-v5,
+body.lyok-ultra .pred-card-v5,
+body.lyok-ultra .x-post-card,
+body.lyok-ultra .arcade-card-v5,
+body.lyok-ultra .mission-row-v5,
+body.lyok-ultra .form.glass {
+  background: var(--premium-surface);
+  box-shadow: var(--premium-glow);
+  border-color: rgba(255, 140, 0, 0.2);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.lyok-ultra .portal-card:hover,
+body.lyok-ultra .game-card:hover,
+body.lyok-ultra .spotlight-card:hover,
+body.lyok-ultra .stat-card:hover,
+body.lyok-ultra .match-card:hover,
+body.lyok-ultra .news-feed-card:hover,
+body.lyok-ultra .reward-card-v5:hover,
+body.lyok-ultra .pred-card-v5:hover,
+body.lyok-ultra .x-post-card:hover {
+  border-color: rgba(255, 184, 0, 0.45);
+  box-shadow: 0 0 32px rgba(255, 85, 0, 0.15), 0 16px 48px rgba(0, 0, 0, 0.5);
+  transform: translateY(-3px);
+}
+
+/* Brillo sutil en tarjetas (CSS puro, sin JS) */
+body.lyok-ultra .tilt-card::before {
+  display: block !important;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 50%), rgba(255, 140, 0, 0.12), transparent 55%);
+}
+
+body.lyok-ultra .tilt-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Hero / secciones ── */
+body.lyok-ultra .hero-v3-accent,
+body.lyok-ultra .sec-head h2 em,
+body.lyok-ultra .news-portal-head h1 em {
+  filter: drop-shadow(0 0 20px rgba(255, 85, 0, 0.35));
+}
+
+body.lyok-ultra .hero-v3-title,
+body.lyok-ultra .hero-v3-logo {
+  filter: drop-shadow(0 0 30px rgba(255, 85, 0, 0.2));
+}
+
+body.lyok-ultra .sec-head-center::after,
+body.lyok-ultra .block-head.center::after {
+  opacity: 0.9;
+}
+
+body.lyok-ultra .eyebrow,
+body.lyok-ultra .sec-eyebrow {
+  text-shadow: 0 0 18px rgba(255, 85, 0, 0.25);
+}
+
+/* ── Footer premium ── */
+body.lyok-ultra .footer {
+  position: relative;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.85));
+}
+
+body.lyok-ultra .footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), var(--gold), var(--orange), transparent);
+  opacity: 0.75;
+}
+
+/* ── Loader premium ── */
+body.lyok-ultra .loader-inner::before,
+body.lyok-ultra .loader-inner::after {
+  display: block !important;
+}
+
+body.lyok-ultra .loader-logo {
+  animation: logoBreath 1.2s ease infinite, logoFloat 3s ease-in-out infinite !important;
+}
+
+body.lyok-ultra .loader-text {
+  animation: loaderTextPulse 2s ease-in-out infinite !important;
+}
+
+/* ── Toast ── */
+body.lyok-ultra .toast.show {
+  border: 1px solid rgba(255, 140, 0, 0.4);
+  box-shadow: 0 12px 40px rgba(255, 85, 0, 0.35);
+  background: rgba(8, 8, 8, 0.95);
+}
+
+/* ── CMS FAB premium ── */
+body.lyok-ultra .cms-fab {
+  background: linear-gradient(145deg, rgba(255, 85, 0, 0.35), rgba(0, 0, 0, 0.92));
+  box-shadow: 0 8px 32px rgba(255, 85, 0, 0.35), inset 0 0 0 1px rgba(255, 184, 0, 0.25);
+}
+
+/* ── PIN gate (login ajustes) ── */
+.cms-pin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.88);
+  pointer-events: auto;
+}
+
+.cms-pin-box,
+.cms-pin-form,
+.cms-pin-actions,
+.cms-pin-actions .btn {
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.cms-pin-actions .btn-primary::after {
+  pointer-events: none !important;
+}
+
+.cms-pin-error {
+  min-height: 1.2em;
+  margin: -8px 0 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ff7b7b;
+}
+
+.cms-pin-overlay.open {
+  animation: cmsPinFade 0.3s ease;
+}
+
+@keyframes cmsPinFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cms-pin-box {
+  width: min(400px, 100%);
+  padding: 36px 32px 28px;
+  background: linear-gradient(165deg, rgba(18, 12, 8, 0.98), rgba(0, 0, 0, 0.98));
+  border: 1px solid rgba(255, 140, 0, 0.35);
+  clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 60px rgba(255, 85, 0, 0.12);
+  text-align: center;
+}
+
+.cms-pin-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 16px rgba(255, 140, 0, 0.5));
+}
+
+.cms-pin-box h2 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  letter-spacing: 2px;
+  color: var(--stone);
+  margin: 0 0 6px;
+}
+
+.cms-pin-box > p {
+  font-size: 0.88rem;
+  color: var(--gray);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.cms-pin-field {
+  display: block;
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.cms-pin-field span {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.cms-pin-field input {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  text-align: center;
+  text-transform: lowercase;
+  color: var(--stone);
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 140, 0, 0.28);
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+}
+
+.cms-pin-field input:focus {
+  outline: none;
+  border-color: rgba(255, 184, 0, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 85, 0, 0.15);
+}
+
+.cms-pin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cms-pin-hint {
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.cms-pin-hint strong {
+  color: var(--orange-light);
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+}
+
+.cms-pin-hint button {
+  background: none;
+  border: none;
+  color: var(--orange);
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+/* ── Mesh más vivo ── */
+body.lyok-ultra .fx-mesh-bg {
+  opacity: 0.65;
+}
+
+body.lyok-ultra .grain {
+  opacity: 0.04 !important;
+}
+
+@media (max-width: 768px) {
+  body.lyok-ultra .tilt-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.lyok-ultra .loader-logo,
+  body.lyok-ultra .loader-text,
+  body.lyok-ultra .header-glow,
+  body.lyok-ultra .lyok-live-badge {
+    animation: none !important;
+  }
+}

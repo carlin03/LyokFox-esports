@@ -1,0 +1,58 @@
+---
+description: LyokFox — estilo potente kitsune (banner oficial + web v2 premium)
+alwaysApply: true
+---
+
+# LyokFox — estilo POTENTE (referencia visual)
+
+## Imagen maestra
+
+**`img/banner-oficial.png`** — banner oficial LyokFox Esports.
+
+Debe inspirar TODA la web: no es minimalismo vacío, es **dark fantasy japonés + esports agresivo**.
+
+### ADN visual del banner
+
+- **Fondo**: negro carbón / gris muy oscuro, alto contraste
+- **Acentos**: naranja fuego → rojo sangre (logo, ojos del kitsune, luna roja, brasas)
+- **Motivos**: kitsune, torii, pagodas, tinta *sumi-e*, luna roja, banderas con logo
+- **Tipografía**: LYOKFOX **pesada, tallada, industrial** — no sans fina ni genérica
+- **Sensación**: cinematográfica, club serio, #Indomables, camada kitsune
+
+### Paleta obligatoria
+
+| Token | Uso |
+|-------|-----|
+| `#030303` – `#0c0c0c` | Fondos |
+| `#ff5a1f` – `#ff7a3d` | Naranja logo / CTAs |
+| `#c94412` – `#9b1c1c` | Rojo profundo / luna |
+| `#d4a24e` | Dorado secundario |
+| `#f4f4f4` | Texto principal |
+
+### Stack actual (v2)
+
+- **HTML**: `index.html`, `secciones.html`, `equipos.html`, `sponsor.html`, `contactanos.html` + secundarias
+- **CSS**: `css/lyok.css` — única hoja de estilos principal
+- **JS**: `js/lyok.js` + `js/lyok-data.js`
+- **Body**: `class="page-fx"` — grain, vignette, embers
+- **Componentes**: ticker, hero-grid, match-panel, brands-strip, cards glass+glow, cta-banner, sec-head
+
+### Reglas al diseñar
+
+1. **Potente sí, plano no** — cards con borde glow, glass, sombras, hover con elevación
+2. **Banner visible** — hero y page-hero usan `banner-oficial.png` con buena opacidad (no apagarlo)
+3. **Títulos display** — Bebas Neue, grande, sombra tallada, acento en gradiente naranja→rojo
+4. **Stats** — Rajdhani, peso 700
+5. **Efectos**: grain, embers, ticker dorado, línea glow en header al scroll
+6. **Coherencia** — misma plantilla en todas las páginas (hero banner + sec-head + cards + cta-banner)
+
+### Prohibido
+
+- Páginas blancas o grises claras
+- Listas sin diseño
+- Otro ADN visual (Bootstrap genérico, startup SaaS, etc.)
+- Referencias obsoletas a `home-v4` / `style.css` antiguo como base principal
+
+### Comprobar
+
+¿Parece el **banner oficial hecho web** o otra cosa? Si es lo segundo, subir contraste, glow y presencia del banner.

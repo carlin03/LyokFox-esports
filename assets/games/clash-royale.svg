@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Clash Royale">
+  <defs>
+    <linearGradient id="cr-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a6fd4"/>
+      <stop offset="100%" stop-color="#0d3d8c"/>
+    </linearGradient>
+    <linearGradient id="cr-crown" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd54f"/>
+      <stop offset="100%" stop-color="#ff9800"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="18" fill="url(#cr-bg)"/>
+  <path fill="url(#cr-crown)" d="M60 22 L72 42 L84 34 L78 58 L42 58 L36 34 L48 42 Z"/>
+  <rect x="38" y="58" width="44" height="8" rx="2" fill="#ffd54f"/>
+  <text x="60" y="88" text-anchor="middle" fill="#fff" font-family="Arial Black, sans-serif" font-size="14" font-weight="900">CLASH</text>
+  <text x="60" y="104" text-anchor="middle" fill="#ffd54f" font-family="Arial Black, sans-serif" font-size="13" font-weight="900">ROYALE</text>
+</svg>

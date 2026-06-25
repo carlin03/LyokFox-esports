@@ -1,0 +1,521 @@
+/* ═══════════════════════════════════════════════════════════
+   LYOKFOX ULTRA PREMIUM — capa global innovadora
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --ultra-glow: 0 0 60px rgba(255, 85, 0, 0.35), 0 0 120px rgba(255, 140, 0, 0.12);
+  --ultra-glass: rgba(8, 8, 8, 0.72);
+  --ultra-border: rgba(255, 140, 0, 0.35);
+  --ultra-shine: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
+}
+
+/* Mesh animado de fondo */
+.fx-mesh-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.55;
+}
+
+.fx-mesh-bg::before,
+.fx-mesh-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: meshDrift 18s ease-in-out infinite alternate;
+}
+
+.fx-mesh-bg::before {
+  width: 55vw;
+  height: 55vw;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(255, 85, 0, 0.22), transparent 70%);
+}
+
+.fx-mesh-bg::after {
+  width: 45vw;
+  height: 45vw;
+  bottom: -10%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(255, 184, 0, 0.12), rgba(204, 34, 0, 0.08), transparent 70%);
+  animation-delay: -9s;
+  animation-duration: 22s;
+}
+
+@keyframes meshDrift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(4%, 6%) scale(1.08); }
+}
+
+/* Spotlight cursor */
+.fx-spotlight {
+  position: fixed;
+  width: 520px;
+  height: 520px;
+  margin: -260px 0 0 -260px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(255, 140, 0, 0.07) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  mix-blend-mode: screen;
+}
+
+body.lyok-ultra .fx-spotlight { opacity: 1; }
+
+@media (hover: none) {
+  .fx-spotlight { display: none; }
+}
+
+/* Scanline sutil innovador */
+.page-fx::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  opacity: 0.025;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.04) 2px,
+    rgba(255, 255, 255, 0.04) 3px
+  );
+}
+
+body.lyok-ultra {
+  position: relative;
+}
+
+body.lyok-ultra > main,
+body.lyok-ultra > .comm-v4,
+body.lyok-ultra > .news-portal {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Loader cinematográfico ── */
+body.lyok-ultra .loader {
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255, 85, 0, 0.25), transparent),
+    #000;
+}
+
+body.lyok-ultra .loader-logo {
+  animation: logoBreath 1.2s ease infinite, logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+body.lyok-ultra .loader-text {
+  letter-spacing: 16px;
+  text-shadow: 0 0 40px rgba(255, 85, 0, 0.5);
+  animation: loaderTextPulse 2s ease-in-out infinite;
+}
+
+@keyframes loaderTextPulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.25); }
+}
+
+/* ── Header ultra ── */
+body.lyok-ultra .header {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+body.lyok-ultra .header.scrolled {
+  background: rgba(0, 0, 0, 0.88);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 140, 0, 0.06);
+}
+
+body.lyok-ultra .brand img {
+  animation: none;
+  filter: none;
+}
+
+@keyframes brandGlow {
+  0%, 100% { filter: drop-shadow(0 0 8px var(--orange-glow)); }
+  50% { filter: drop-shadow(0 0 22px var(--glow-strong)); }
+}
+
+body.lyok-ultra .nav-hot {
+  position: relative;
+}
+
+body.lyok-ultra .nav-hot::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--orange), var(--gold), var(--orange));
+  background-size: 200% 100%;
+  animation: navHotShine 3s linear infinite;
+  opacity: 0.35;
+  z-index: -1;
+}
+
+@keyframes navHotShine {
+  to { background-position: 200% 0; }
+}
+
+body.lyok-ultra .header-profile-btn {
+  box-shadow: 0 0 0 1px rgba(255, 140, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+
+body.lyok-ultra .header-profile-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 24px rgba(255, 85, 0, 0.45), 0 0 0 1px rgba(255, 140, 0, 0.5);
+}
+
+/* ── Botones potencia ── */
+body.lyok-ultra .btn-primary {
+  box-shadow: 0 8px 40px rgba(255, 85, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+
+body.lyok-ultra .btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 48px rgba(255, 85, 0, 0.55), 0 0 60px rgba(255, 140, 0, 0.2);
+}
+
+body.lyok-ultra .btn-glass {
+  backdrop-filter: blur(12px);
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+body.lyok-ultra .btn-glass:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 140, 0, 0.45);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Hero inicio ── */
+body.lyok-ultra .hero-v3-title span:first-child {
+  text-shadow: 0 0 80px rgba(255, 85, 0, 0.15);
+}
+
+body.lyok-ultra .hero-v3-accent {
+  position: relative;
+  animation: titleShimmer 6s linear infinite, accentGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes accentGlow {
+  from { filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.4)); }
+  to { filter: drop-shadow(0 0 40px rgba(255, 184, 0, 0.7)); }
+}
+
+body.lyok-ultra .hero-kp-strip {
+  background: linear-gradient(135deg, rgba(255, 85, 0, 0.12), rgba(0, 0, 0, 0.6));
+  border: 1px solid rgba(255, 140, 0, 0.35);
+  box-shadow: var(--ultra-glow);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+body.lyok-ultra .hero-kp-strip:hover {
+  transform: translateX(6px);
+  box-shadow: 0 0 50px rgba(255, 85, 0, 0.4), 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+body.lyok-ultra .hero-team-card {
+  overflow: hidden;
+}
+
+body.lyok-ultra .hero-team-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ultra-shine);
+  transform: translateX(-120%);
+  transition: transform 0.7s;
+}
+
+body.lyok-ultra .hero-team-card:hover::before {
+  transform: translateX(120%);
+}
+
+body.lyok-ultra .hero-ticker {
+  border-top-color: rgba(255, 184, 0, 0.4);
+  box-shadow: 0 -16px 60px rgba(255, 85, 0, 0.15), inset 0 1px 0 rgba(255, 200, 100, 0.15);
+}
+
+body.lyok-ultra .ticker-track span:nth-child(odd) {
+  text-shadow: 0 0 24px rgba(255, 140, 0, 0.5);
+}
+
+/* ── Tarjetas premium global ── */
+.ultra-card,
+body.lyok-ultra .stat-card,
+body.lyok-ultra .portal-card,
+body.lyok-ultra .spotlight-card,
+body.lyok-ultra .news-feed-card,
+body.lyok-ultra .news-side-box,
+body.lyok-ultra .reward-card-v5,
+body.lyok-ultra .mission-row-v5,
+body.lyok-ultra .pred-card-v5,
+body.lyok-ultra .pred-hero-card,
+body.lyok-ultra .shop-showcase-card,
+body.lyok-ultra .shop-bar-v6,
+body.lyok-ultra .arcade-card-v5,
+body.lyok-ultra .social-hero-v5,
+body.lyok-ultra .missions-hero-v5,
+body.lyok-ultra .pred-matchday-v5,
+body.lyok-ultra .x-post-card,
+body.lyok-ultra .player,
+body.lyok-ultra .game-card,
+body.lyok-ultra .sponsor,
+body.lyok-ultra .benefit-card,
+body.lyok-ultra .trophy-card,
+body.lyok-ultra .milestone-card,
+body.lyok-ultra .value-card,
+body.lyok-ultra .eq-stat,
+body.lyok-ultra .cuenta-panel.active,
+body.lyok-ultra .page-cta-inner {
+  position: relative;
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s, border-color 0.35s;
+}
+
+body.lyok-ultra .tilt-card {
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(var(--ty, 0deg)) rotateY(var(--tx, 0deg));
+}
+
+body.lyok-ultra .news-feed-card:hover,
+body.lyok-ultra .news-side-box:hover,
+body.lyok-ultra .reward-card-v5:hover,
+body.lyok-ultra .pred-card-v5:hover,
+body.lyok-ultra .player:hover,
+body.lyok-ultra .game-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 140, 0, 0.2);
+}
+
+/* Borde neón animado en cards top */
+body.lyok-ultra .news-feed-hero,
+body.lyok-ultra .pred-hero-card,
+body.lyok-ultra .shop-bar-v6,
+body.lyok-ultra .social-hero-v5 {
+  position: relative;
+  overflow: hidden;
+}
+
+body.lyok-ultra .news-feed-hero::before,
+body.lyok-ultra .pred-hero-card::before,
+body.lyok-ultra .shop-bar-v6::before,
+body.lyok-ultra .social-hero-v5::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  background: conic-gradient(from var(--neon-angle, 0deg), transparent, var(--orange), var(--gold), var(--orange), transparent);
+  animation: neonSpin 8s linear infinite;
+  opacity: 0.35;
+  border-radius: inherit;
+}
+
+body.lyok-ultra .news-feed-hero > *,
+body.lyok-ultra .pred-hero-card > *,
+body.lyok-ultra .shop-bar-v6 > *,
+body.lyok-ultra .social-hero-v5 > * {
+  position: relative;
+  z-index: 1;
+}
+
+@property --neon-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes neonSpin {
+  to { --neon-angle: 360deg; }
+}
+
+/* KP coin 3D */
+body.lyok-ultra .kp-coin {
+  transition: transform 0.4s var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+body.lyok-ultra .kp-coin:hover {
+  transform: rotateY(12deg) scale(1.08);
+  filter: drop-shadow(0 0 16px rgba(255, 140, 0, 0.6));
+}
+
+/* ── Comunidad tabs ── */
+body.lyok-ultra .comm-v4-tab {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+body.lyok-ultra .comm-v4-tab.active {
+  background: linear-gradient(135deg, rgba(255, 85, 0, 0.25), rgba(255, 184, 0, 0.12));
+  box-shadow: 0 0 24px rgba(255, 85, 0, 0.25), inset 0 0 20px rgba(255, 140, 0, 0.08);
+  text-shadow: 0 0 12px rgba(255, 140, 0, 0.4);
+}
+
+body.lyok-ultra .lyok-live-ticker {
+  box-shadow: 0 4px 32px rgba(255, 85, 0, 0.15);
+}
+
+body.lyok-ultra .lyok-live-badge {
+  box-shadow: 0 0 20px rgba(255, 184, 0, 0.5);
+}
+
+/* ── Noticias portal ── */
+body.lyok-ultra .news-breaking {
+  background: linear-gradient(90deg, rgba(255, 85, 0, 0.28), rgba(255, 224, 51, 0.15), rgba(255, 85, 0, 0.28));
+  background-size: 200% 100%;
+  animation: breakingFlow 6s linear infinite;
+}
+
+@keyframes breakingFlow {
+  to { background-position: 200% 0; }
+}
+
+body.lyok-ultra .news-feed-img-wrap::after {
+  background: linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+body.lyok-ultra .news-portal-head h1 {
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  text-shadow: 0 0 60px rgba(255, 85, 0, 0.2);
+}
+
+/* ── Footer premium ── */
+body.lyok-ultra .footer {
+  position: relative;
+  border-top: 1px solid transparent;
+}
+
+body.lyok-ultra .footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), var(--gold), var(--orange), transparent);
+  background-size: 200% 100%;
+  animation: navHotShine 5s linear infinite;
+  opacity: 0.6;
+}
+
+/* ── Secciones inner pages ── */
+body.lyok-ultra .page-hero h1,
+body.lyok-ultra .page-hero-legend h1 {
+  text-shadow: 0 0 80px rgba(255, 85, 0, 0.15);
+}
+
+body.lyok-ultra .hv3-stat,
+body.lyok-ultra .cv4-stat {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+body.lyok-ultra .hv3-stat:hover,
+body.lyok-ultra .cv4-stat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(255, 85, 0, 0.15);
+}
+
+/* Reveal más dramático */
+body.lyok-ultra .reveal-item {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+
+body.lyok-ultra .reveal-item.show {
+  opacity: 1;
+  transform: none;
+}
+
+/* Paneles Comunidad: contenido dinámico siempre visible */
+body.lyok-ultra .comm-v4-panel.active .reveal-item,
+body.lyok-ultra .comm-v4-panel:not([hidden]) .pred-card-v5,
+body.lyok-ultra .comm-v4-panel:not([hidden]) .pred-hero-card,
+body.lyok-ultra .comm-v4-panel:not([hidden]) .pred-hist-v5,
+body.lyok-ultra .comm-v4-panel:not([hidden]) .reward-card-v5,
+body.lyok-ultra .comm-v4-panel:not([hidden]) .shop-showcase-card {
+  opacity: 1;
+  transform: none;
+}
+
+/* Embers más vivos */
+body.lyok-ultra .ember {
+  box-shadow: 0 0 6px rgba(255, 140, 0, 0.8);
+}
+
+body.lyok-ultra .ember-gold {
+  box-shadow: 0 0 10px rgba(255, 224, 51, 0.9);
+}
+
+/* Grain más cinematográfico */
+body.lyok-ultra .grain {
+  opacity: 0.045;
+}
+
+body.lyok-ultra .hero-v3-grid-lines {
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(255, 140, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 140, 0, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.45; }
+}
+
+body.lyok-ultra .featured-match,
+body.lyok-ultra .hero-countdown {
+  backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 140, 0, 0.1);
+}
+
+body.lyok-ultra .comm-v4-bar {
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  border-bottom-color: rgba(255, 140, 0, 0.25);
+}
+
+body.lyok-ultra .profile-panel-drawer {
+  box-shadow: -20px 0 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 140, 0, 0.15);
+}
+
+body.lyok-ultra .news-article-panel {
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 140, 0, 0.2);
+}
+
+body.lyok-ultra .toast {
+  backdrop-filter: blur(20px);
+  box-shadow: 0 12px 40px rgba(255, 85, 0, 0.35);
+  border: 1px solid rgba(255, 140, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-mesh-bg::before,
+  .fx-mesh-bg::after,
+  body.lyok-ultra .hero-v3-accent,
+  body.lyok-ultra .news-breaking,
+  body.lyok-ultra .footer::before,
+  body.lyok-ultra .nav-hot::before {
+    animation: none !important;
+  }
+  body.lyok-ultra .tilt-card {
+    transform: none !important;
+  }
+}

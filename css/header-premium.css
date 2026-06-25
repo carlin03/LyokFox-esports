@@ -1,0 +1,289 @@
+/* ═══ CABECERA PREMIUM V7 — cinematográfica, ligera, sin blur pesado ═══ */
+
+:root {
+  --header-h: 68px;
+  --ticker-h: 38px;
+}
+
+/* ── Base ── */
+.header {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 6, 3, 0.97) 0%,
+    rgba(0, 0, 0, 0.94) 100%
+  ) !important;
+  border-bottom: 1px solid rgba(255, 140, 0, 0.14) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 184, 0, 0.07),
+    0 4px 28px rgba(0, 0, 0, 0.42) !important;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 184, 0, 0.45), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.header.scrolled {
+  background: linear-gradient(
+    180deg,
+    rgba(12, 7, 3, 0.99) 0%,
+    rgba(0, 0, 0, 0.97) 100%
+  ) !important;
+  border-bottom-color: rgba(255, 140, 0, 0.22) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 184, 0, 0.1),
+    0 8px 36px rgba(0, 0, 0, 0.55) !important;
+}
+
+.header-glow {
+  height: 1px;
+  opacity: 0.55;
+  animation: none;
+  box-shadow: 0 0 14px rgba(255, 85, 0, 0.25);
+}
+
+.header.scrolled .header-glow {
+  opacity: 0.85;
+}
+
+/* ── Portada: cabecera flotante sobre el banner ── */
+body.home-v4 .header:not(.scrolled) {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.62) 0%,
+    rgba(0, 0, 0, 0.22) 52%,
+    transparent 100%
+  ) !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+body.home-v4 .header:not(.scrolled)::before {
+  opacity: 0.28;
+}
+
+body.home-v4 .header:not(.scrolled) .header-glow {
+  opacity: 0.2;
+}
+
+body.home-v4.header-scrolled .header {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 6, 3, 0.98) 0%,
+    rgba(0, 0, 0, 0.96) 100%
+  ) !important;
+  border-bottom-color: rgba(255, 140, 0, 0.2) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 184, 0, 0.08),
+    0 6px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ── Marca ── */
+.brand {
+  gap: 10px;
+  padding: 5px 16px 5px 6px;
+  border: 1px solid rgba(255, 140, 0, 0.14);
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.1) 0%, rgba(0, 0, 0, 0.15) 55%);
+  clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.brand:hover {
+  border-color: rgba(255, 184, 0, 0.32);
+  box-shadow: 0 0 22px rgba(255, 85, 0, 0.14);
+  transform: translateY(-1px);
+}
+
+.brand img {
+  width: 34px;
+  filter: drop-shadow(0 0 8px rgba(255, 85, 0, 0.45));
+}
+
+.brand span .accent {
+  color: var(--accent-bright, var(--accent));
+  -webkit-text-fill-color: var(--accent-bright, var(--accent));
+}
+
+.brand span {
+  font-size: 1.28rem;
+  letter-spacing: 3.5px;
+  text-shadow: 0 0 24px rgba(255, 85, 0, 0.15);
+}
+
+body.home-v4 .header:not(.scrolled) .brand {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+}
+
+/* ── Navegación ── */
+.nav-link {
+  padding: 7px 15px;
+  font-size: 0.78rem;
+  letter-spacing: 1.8px;
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.nav-link::after {
+  height: 1px;
+  bottom: 4px;
+  box-shadow: 0 0 8px rgba(255, 85, 0, 0.35);
+}
+
+.nav-link::before {
+  background: rgba(255, 140, 0, 0.06);
+  border: 1px solid rgba(255, 140, 0, 0.08);
+  border-radius: 2px;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 16px rgba(255, 140, 0, 0.25);
+}
+
+.nav-link.active::before {
+  background: rgba(255, 140, 0, 0.1);
+  border-color: rgba(255, 184, 0, 0.22);
+  opacity: 1;
+  transform: scale(1);
+}
+
+.nav-cta {
+  padding: 9px 20px !important;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  box-shadow:
+    0 4px 22px rgba(255, 85, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+  letter-spacing: 1.6px !important;
+}
+
+body.lyok-ultra .nav-hot::before {
+  opacity: 0.22;
+}
+
+/* ── Perfil KP ── */
+.header-profile-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 140, 0, 0.35);
+  background: linear-gradient(145deg, rgba(255, 140, 0, 0.12), rgba(0, 0, 0, 0.65));
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5) inset,
+    0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.header-profile-btn:hover {
+  border-color: rgba(255, 184, 0, 0.65);
+  box-shadow:
+    0 0 18px rgba(255, 140, 0, 0.22),
+    0 0 0 1px rgba(255, 184, 0, 0.15) inset;
+  transform: translateY(-1px);
+}
+
+.header-profile-kp {
+  font-size: 0.5rem;
+  padding: 1px 5px;
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+}
+
+/* ── Ticker EN VIVO — más fino e integrado ── */
+.lyok-live-ticker {
+  background: linear-gradient(
+    180deg,
+    rgba(6, 4, 2, 0.94) 0%,
+    rgba(0, 0, 0, 0.96) 100%
+  ) !important;
+  border-bottom: 1px solid rgba(255, 140, 0, 0.1) !important;
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.35) !important;
+  gap: 12px;
+}
+
+body.home-v4:not(.header-scrolled) .lyok-live-ticker {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.38) 0%,
+    rgba(0, 0, 0, 0.72) 100%
+  ) !important;
+  border-bottom-color: rgba(255, 140, 0, 0.06) !important;
+  box-shadow: none !important;
+}
+
+body.home-v4.header-scrolled .lyok-live-ticker {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 5, 2, 0.96) 0%,
+    rgba(0, 0, 0, 0.97) 100%
+  ) !important;
+  border-bottom-color: rgba(255, 140, 0, 0.14) !important;
+}
+
+.lyok-live-ticker::before {
+  opacity: 0.35;
+}
+
+.lyok-live-badge {
+  padding: 4px 10px;
+  font-size: 0.54rem;
+  letter-spacing: 2px;
+}
+
+.lyok-live-track .ticker-track span,
+.ticker-track span {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.ticker-track span strong,
+.lyok-live-track .ticker-track span strong {
+  color: rgba(255, 184, 0, 0.85);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  :root {
+    --header-h: 62px;
+    --ticker-h: 34px;
+  }
+
+  .brand {
+    padding: 4px 10px 4px 4px;
+    gap: 8px;
+  }
+
+  .brand span {
+    font-size: 1.1rem;
+    letter-spacing: 2.5px;
+  }
+
+  .brand img {
+    width: 30px;
+  }
+
+  .header-profile-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .lyok-live-badge {
+    margin-left: 12px !important;
+    padding: 3px 8px;
+    font-size: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand:hover,
+  .header-profile-btn:hover {
+    transform: none;
+  }
+}

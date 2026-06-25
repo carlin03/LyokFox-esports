@@ -1,0 +1,40 @@
+# LyokFox Esports — Guia rapida
+
+## Mismas paginas en TODAS las webs (igual que localhost)
+
+Localhost y online usan los MISMOS archivos y rutas .html:
+
+| Pagina     | Ruta              |
+|------------|-------------------|
+| Inicio     | index.html        |
+| Comunidad  | comunidad.html    |
+| Noticias   | noticias.html     |
+| Historia   | historia.html     |
+| Equipos    | equipos.html      |
+| Mi cuenta  | cuenta.html       |
+| Sponsor    | sponsor.html      |
+| Contacto   | contactanos.html  |
+
+Enlaces internos: siempre relativos (ej. comunidad.html#tienda).
+Config central: js/config.js
+
+## URLs
+
+| Entorno  | URL |
+|----------|-----|
+| Local    | http://localhost:3000 |
+| Online 1 | https://lyokfox.vercel.app |
+| Online 2 | https://lyokfox-esports.vercel.app |
+
+## Publicar en TODAS las webs
+
+Doble clic en PUBLICAR-WEB.bat (sube a las 2 webs online)
+
+## Ver en local
+
+INICIAR-WEB.bat → http://localhost:3000
+
+## Zona Comunidad
+
+Puntos (KP), minijuegos, predicciones y tienda: comunidad.html
+Datos editables: js/community-data.js

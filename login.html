@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Inicia sesión o crea tu perfil LyokFox — cuenta camada opcional.">
+  <title>Entrar | LyokFox Esports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/lyok.css?v=2026.06.25-web">
+  <link rel="stylesheet" href="css/lyok-premium.css?v=2026.06.25-web">
+  <link rel="stylesheet" href="css/pages-inner.css?v=2026.06.25-web">
+  <link rel="stylesheet" href="css/site-cohesion.css?v=2026.06.25-web">
+  <link rel="stylesheet" href="css/auth.css?v=2026.06.25-web">
+  <link rel="stylesheet" href="css/cuenta-premium.css?v=2026.06.25-web">
+  <link rel="icon" href="img/logo.jpg" type="image/jpeg">
+</head>
+<body data-page="login" class="page-fx page-inner page-auth lyok-ultra">
+  <div id="site-header"></div>
+  <main class="lyok-page auth-page" id="main-content">
+    <div class="wrap auth-wrap auth-wrap--centered">
+      <section class="auth-card card reveal-item">
+        <header class="auth-head">
+          <img src="img/logo.jpg" alt="LyokFox" class="auth-logo">
+          <p class="eyebrow"><span class="line"></span> Camada LyokFox <span class="line"></span></p>
+          <h1 id="auth-title">Tu perfil</h1>
+          <p class="auth-sub" id="auth-sub">Inicia sesión o crea tu perfil camada. Opcional para navegar la web.</p>
+        </header>
+        <div class="auth-mode-pick" id="auth-mode-pick" role="tablist">
+          <button type="button" class="auth-mode-card active" data-auth-mode="login" role="tab" aria-selected="true">
+            <span class="auth-mode-icon" aria-hidden="true">→</span>
+            <strong>Iniciar sesión</strong>
+            <em>Ya tengo cuenta</em>
+          </button>
+          <button type="button" class="auth-mode-card" data-auth-mode="register" role="tab" aria-selected="false">
+            <span class="auth-mode-icon auth-mode-icon--new" aria-hidden="true">+</span>
+            <strong>Crear perfil</strong>
+            <em>Registro nuevo</em>
+          </button>
+        </div>
+        <div id="auth-config-warn" class="auth-warn auth-warn--local" hidden></div>
+        <form id="auth-form-login" class="auth-form" autocomplete="on">
+          <label class="auth-field">
+            <span>Email</span>
+            <input type="email" id="login-email" required autocomplete="email" placeholder="tu@email.com">
+          </label>
+          <label class="auth-field">
+            <span>Contraseña</span>
+            <input type="password" id="login-password" required autocomplete="current-password" minlength="6" placeholder="Mínimo 6 caracteres">
+          </label>
+          <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+        </form>
+        <form id="auth-form-register" class="auth-form" hidden autocomplete="on">
+          <label class="auth-field">
+            <span>Apodo camada</span>
+            <input type="text" id="reg-nickname" required maxlength="18" autocomplete="nickname" placeholder="Ej. FoxMaster">
+          </label>
+          <label class="auth-field">
+            <span>Email</span>
+            <input type="email" id="reg-email" required autocomplete="email" placeholder="tu@email.com">
+          </label>
+          <label class="auth-field">
+            <span>Contraseña</span>
+            <input type="password" id="reg-password" required autocomplete="new-password" minlength="6" placeholder="Mínimo 6 caracteres">
+          </label>
+          <button type="submit" class="btn btn-primary btn-full">Crear perfil</button>
+          <p class="auth-fine">Tu perfil se guarda en este navegador. Puedes editarlo después en Mi perfil.</p>
+        </form>
+        <div class="auth-foot">
+          <a href="cuenta.html" class="btn btn-glass btn-sm">Ir a Mi perfil</a>
+          <a href="index.html" class="btn btn-ghost btn-sm">Volver al inicio</a>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <div id="toast" class="cuenta-toast" role="status" aria-live="polite"></div>
+  <script src="js/config.js?v=2026.06.25-web"></script>
+  <script src="js/lyok-data.js?v=2026.06.25-web" defer></script>
+  <script src="js/lyok-studio-loader.js?v=2026.06.25-web" defer></script>
+  <script src="js/lyok-profile.js?v=2026.06.25-web" defer></script>
+  <script src="js/lyok-fx.js?v=2026.06.25-web" defer></script>
+  <script src="js/lyok.js?v=2026.06.25-web" defer></script>
+</body>
+</html>

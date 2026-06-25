@@ -1,0 +1,272 @@
+/* ═══ LYOKFOX — Auditoría móvil pre-publicación ═══
+   Sin solapamientos, sin scroll horizontal, tap targets legibles. */
+
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: clip;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.wrap {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Portada v9: crown ya compensa header+ticker — evitar doble offset */
+body.has-live-ticker.home-v4 .hero-v3.hero-portada-premium {
+  padding-top: 0 !important;
+}
+
+/* Historia: nav sticky bajo ticker */
+body.has-live-ticker .story-nav {
+  top: calc(var(--header-h) + var(--ticker-h));
+}
+
+/* Texto largo (nombres rivales, URLs, KPI) */
+.match-opponent,
+.comm-v4-bar-title h1,
+.page-hero-content h1,
+.news-article-title,
+.team-modal-about,
+.pred-card-v5 h3,
+.mission-row-v5 strong {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* ── Tablet / móvil ── */
+@media (max-width: 768px) {
+  .lyok-live-badge {
+    margin-left: 12px !important;
+  }
+
+  /* Menú full-screen bajo header + ticker (no tapar enlaces) */
+  body.has-live-ticker .nav {
+    top: calc(var(--header-h) + var(--ticker-h));
+    z-index: 110;
+  }
+
+  .home-v4 .hero-v3.hero-portada-premium {
+    min-height: auto;
+    max-height: none;
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  .page-historia .page-hero-legend {
+    min-height: 46vh;
+  }
+
+  .story-intro-block {
+    padding-top: 56px;
+  }
+
+  .page-hero {
+    min-height: 36vh;
+    padding-bottom: 48px;
+  }
+
+  .page-hero-content h1 {
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 1.05;
+  }
+
+  .page-hero-desc {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+
+  /* Toast por encima del FAB Studio */
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: max(88px, calc(68px + env(safe-area-inset-bottom, 0px)));
+    z-index: 10035;
+    text-align: center;
+    padding: 14px 18px;
+    font-size: 0.82rem;
+  }
+
+  .cms-fab,
+  .cms-fab--premium {
+    bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    right: max(16px, env(safe-area-inset-right, 0px));
+    z-index: 10030;
+  }
+
+  body:has(.cms-fab) .footer,
+  body:has(.cms-fab) main.lyok-page,
+  body:has(.cms-fab) main.comm-v4 {
+    padding-bottom: max(72px, calc(56px + env(safe-area-inset-bottom, 0px)));
+  }
+
+  .hero-portada-match .featured-match-inner .match-comp {
+    margin: 6px 0 0;
+    flex: 1 1 100%;
+    padding-left: 0;
+  }
+
+  .hero-portada-match .featured-match-inner .match-datetime {
+    margin-left: 0;
+    flex: 1 1 100%;
+    text-align: left;
+  }
+
+  .hero-portada-match-meta {
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .hero-portada-match-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-portada-match .hero-predict-cta {
+    white-space: normal;
+    text-align: center;
+    width: 100%;
+  }
+
+  .hero-portada-v9 .hero-portada-scroll {
+    display: none;
+  }
+
+  .hero-portada-v9 .hero-portada-crown {
+    padding-top: calc(var(--header-h) + var(--ticker-h) + 14px);
+    padding-bottom: 12px;
+  }
+
+  .hero-portada-v9 .hero-portada-live {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: calc(100% - 8px);
+    text-align: center;
+    font-size: 0.54rem;
+    letter-spacing: 1.4px;
+    line-height: 1.35;
+    gap: 4px 6px;
+  }
+
+  .hero-portada-v9 .hero-portada-tagline {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    padding: 0 4px;
+  }
+
+  .hero-portada-v9 .hero-portada-actions {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 4px;
+  }
+
+  .hero-portada-v9 .hero-portada-btn-main,
+  .hero-portada-v9 .hero-portada-btn-ghost,
+  .hero-portada-actions .btn {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hero-portada-v9 .hero-portada-dock {
+    padding-left: max(10px, env(safe-area-inset-left, 0px));
+    padding-right: max(10px, env(safe-area-inset-right, 0px));
+    padding-bottom: max(18px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .hero-portada-v9 .hero-portada-stats .hv3-stat {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 8px;
+  }
+
+  .hero-portada-v9 .hero-portada-stats .hv3-stat:last-child {
+    grid-column: 1 / -1;
+    border-bottom: none;
+  }
+
+  .hero-portada-v9 .hero-portada-stats strong {
+    font-size: clamp(1.15rem, 5vw, 1.5rem);
+  }
+
+  .hero-portada-v9 .hero-portada-stats span {
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+  }
+
+  .hero-portada-v9 .hero-portada-social-strip {
+    gap: 10px 16px;
+    padding: 12px 14px;
+  }
+
+  .comm-v4-bar-intro p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .page-comunidad-v4 .comm-v4-tab {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+
+  .news-portal-top h1 {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+  }
+
+  .contact-wrap .btn,
+  .sponsor-banner .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Móvil estrecho (iPhone SE, etc.) ── */
+@media (max-width: 390px) {
+  .hero-portada-v9 .hero-portada-title {
+    font-size: clamp(3.2rem, 20vw, 4.6rem);
+    letter-spacing: 4px;
+  }
+
+  .hero-portada-v9 .hero-portada-logo-stage {
+    width: 104px;
+    height: 104px;
+    margin-bottom: 10px;
+  }
+
+  .hero-portada-v9 .hero-portada-logo {
+    width: 84px;
+    height: 84px;
+  }
+
+  .brand span {
+    font-size: 0.95rem !important;
+    letter-spacing: 2px !important;
+  }
+
+  .story-nav-inner a {
+    font-size: 0.58rem;
+    padding: 8px 10px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-portada-v9 .hero-portada-chips {
+    gap: 6px;
+  }
+
+  .hero-portada-v9 .hero-portada-chip {
+    font-size: 0.62rem;
+    padding: 5px 10px;
+  }
+}

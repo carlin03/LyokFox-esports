@@ -1,0 +1,267 @@
+/* ═══ COMUNIDAD — sin solapamientos entre secciones ═══ */
+
+/* ── Barra superior: intro/stats scroll, solo pestañas sticky ── */
+.page-comunidad-v4 .comm-v4-bar {
+  position: relative;
+  top: auto;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.page-comunidad-v4 .comm-v4-bar-intro {
+  width: 100%;
+  min-width: 0;
+}
+
+.page-comunidad-v4 .comm-v4-bar-stats {
+  width: 100%;
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.page-comunidad-v4 .comm-v4-tabs {
+  position: sticky;
+  top: calc(var(--header-h) + var(--ticker-h));
+  z-index: 75;
+  width: 100%;
+  margin: 0;
+  padding: 8px 0 10px;
+  background: rgba(0, 0, 0, 0.97);
+  border-top: 1px solid rgba(255, 140, 0, 0.12);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Paneles: uno visible, sin capas fantasma ── */
+.comm-v4-panels {
+  position: relative;
+  z-index: 1;
+  clear: both;
+}
+
+.comm-v4-panel[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+.comm-v4-panel:not(.active) {
+  display: none !important;
+}
+
+.comm-v4-panel.active:not([hidden]) {
+  display: block;
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+}
+
+.comm-v4-panel.active:not([hidden])::before {
+  display: none;
+}
+
+.comm-v4-panel.active:not([hidden])[data-panel="predicciones"] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Redes: rail estrecho — grids en columna ── */
+.social-rail-v5 .social-summary-grid {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.social-rail-v5 .social-summary-total {
+  grid-column: auto;
+}
+
+.social-rail-v5 .social-summary-card {
+  padding: 12px 14px;
+}
+
+.social-rail-v5 .social-summary-card strong {
+  font-size: 1.05rem;
+}
+
+.social-rail-v5 .x-banner-inner {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 12px;
+}
+
+.social-rail-v5 .x-banner-stat {
+  padding: 8px 6px;
+}
+
+.social-rail-v5 .x-banner-stat strong {
+  font-size: 1.1rem;
+}
+
+.social-rail-v5 .x-how-grid,
+.social-rail-v5 .x-how-v5 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+.social-rail-v5 .x-how-step {
+  min-width: 0;
+}
+
+.social-rail-v5 .x-how-grid .btn,
+.social-rail-v5 .x-how-v5 .btn {
+  width: 100%;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.social-rail-v5 .social-summary-hint {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.social-layout-v5 {
+  align-items: start;
+}
+
+.social-feed-v5 {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.social-posts-v5 {
+  max-height: min(62vh, 560px);
+}
+
+/* ── Tienda: toolbar y chips sin pisarse ── */
+.shop-toolbar-v6 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.shop-tiers-inline,
+.shop-cats-row {
+  min-width: 0;
+}
+
+.shop-tips-v6 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.pred-rules-v6 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  gap: 6px;
+  align-items: stretch;
+}
+
+.pred-rules-v6 .pred-rule-link {
+  grid-column: 1 / -1;
+  margin-left: 0;
+  margin-top: 2px;
+  text-align: center;
+}
+
+/* ── Juegos / misiones: tarjetas con aire ── */
+.games-arcade-v5 {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.games-extras-v5 {
+  grid-template-columns: 1fr;
+}
+
+.mission-row-v5 {
+  grid-template-columns: auto 1fr;
+  gap: 10px 12px;
+}
+
+.mission-row-side {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+}
+
+/* ── Contenido dinámico siempre visible (no reveal oculto) ── */
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .reveal-item,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .pred-card-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .pred-hero-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .pred-hist-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .reward-card-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .shop-showcase-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .mission-row-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .x-post-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .arcade-card-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .social-hero-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .shop-bar-v6,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .missions-hero-v5,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .social-summary-card,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .x-how-step,
+body.lyok-ultra .page-comunidad-v4 .comm-v4-panel.active:not([hidden]) .x-banner-stat {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* ── Offset scroll anclas (#tienda, #predicciones…) ── */
+.page-comunidad-v4 .comm-v4-panel {
+  scroll-margin-top: calc(var(--header-h) + var(--ticker-h) + 56px);
+}
+
+@media (max-width: 900px) {
+  .social-posts-v5 {
+    max-height: none;
+  }
+
+  .shop-tips-v6 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .reward-grid-v6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .page-comunidad-v4 .comm-v4-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 6px;
+  }
+
+  .page-comunidad-v4 .comm-v4-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .shop-tips-v6,
+  .reward-grid-v6,
+  .pred-grid-v6,
+  .pred-history-v6 {
+    grid-template-columns: 1fr;
+  }
+
+  .social-rail-v5 .x-banner-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
