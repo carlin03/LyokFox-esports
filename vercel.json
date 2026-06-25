@@ -2,7 +2,8 @@
   "version": 2,
   "buildCommand": "node scripts/stamp-build.js web && node scripts/write-supabase-config.js",
   "builds": [
-    { "src": "api/**/*.js", "use": "@vercel/node" }
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "**", "use": "@vercel/static" }
   ],
   "rewrites": [
     { "source": "/api/studio-publish", "destination": "/api/studio-publish.js" }
