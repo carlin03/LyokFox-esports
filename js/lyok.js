@@ -2123,18 +2123,26 @@
     });
   }
 
+  function bootCore() {
+    loadPublicLyokData();
+    ensureCoreContent(typeof LYOK_DATA_DEFAULTS !== 'undefined' ? LYOK_DATA_DEFAULTS : null);
+    initCmsPreviewBridge();
+    rerenderContent();
+    document.body.classList.add('ready', 'lyok-ready');
+    initNav();
+    initContactForm();
+    runPendingItemPreview();
+  }
+
   function boot() {
     try {
       if (isStudioFrame()) document.body.classList.add('studio-frame-page');
       ensureLocalhostProdParity();
-      loadPublicLyokData();
-      ensureCoreContent(typeof LYOK_DATA_DEFAULTS !== 'undefined' ? LYOK_DATA_DEFAULTS : null);
-      initCmsPreviewBridge();
-      rerenderContent();
-      document.body.classList.add('ready', 'lyok-ready');
-      initNav();
-      initContactForm();
-      runPendingItemPreview();
+      if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
+        LyokCmsCloud.pull().finally(bootCore);
+      } else {
+        bootCore();
+      }
     } catch (err) {
       console.error('[LyokFox] Error al iniciar la web:', err);
       var header = document.getElementById('site-header');

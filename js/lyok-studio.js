@@ -3257,13 +3257,21 @@
 
     shell.querySelector('#st-publish').onclick = function () {
       var data = collectData();
-      saveSaved({ data: data, visibility: data.visibility });
+      var saved = { data: data, visibility: data.visibility };
+      saveSaved(saved);
       previewData = null;
       deepMerge(LYOK_DATA, data);
       applyOverrides(loadSaved());
       closePanel(false);
       refresh();
-      toast('Cambios publicados');
+      if (window.LyokCmsCloud && LyokCmsCloud.isConfigured && LyokCmsCloud.isConfigured()) {
+        LyokCmsCloud.push(saved, PIN).then(function (r) {
+          if (r && r.ok) toast('Publicado en la nube — todos lo verán');
+          else toast('Guardado local. Nube: ' + ((r && r.reason) || 'no disponible'));
+        });
+      } else {
+        toast('Cambios publicados (solo en este navegador)');
+      }
     };
 
     setSection(activeSection);
