@@ -721,6 +721,7 @@
   }
 
   function bindLoginPageUi() {
+    var pick = document.getElementById('auth-mode-pick');
     if (pick) {
       pick.querySelectorAll('[data-auth-mode]').forEach(function (btn) {
         btn.addEventListener('click', function () {
