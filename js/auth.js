@@ -6,7 +6,10 @@
   var readyPromise = null;
 
   function cfg() {
-    return window.SUPABASE_CONFIG || { url: '', anonKey: '', enabled: false };
+    var c = window.SUPABASE_CONFIG;
+    if (c && c.enabled && c.url && c.anonKey) return c;
+    if (window.SITE && SITE.supabase && SITE.supabase.enabled) return SITE.supabase;
+    return { url: '', anonKey: '', enabled: false };
   }
 
   function isConfigured() {

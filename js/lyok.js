@@ -6,7 +6,7 @@
     short: 'LyokFox',
     url: 'https://lyokfox.vercel.app',
     email: 'lyokfox@gmail.com',
-    build: '2026.06.25-web',
+    build: '2026.06.26-sync',
     est: 2020,
     tagline: 'La astucia del kitsune · El fuego de la competición',
     nav: [
@@ -2141,6 +2141,13 @@
       cms.pullAndApply(true).then(function (payload) {
         cmsMergedFromCloud = !!(payload && payload.data);
         if (cms.subscribe) cms.subscribe();
+        if (!cmsMergedFromCloud && cms.isProdHost && cms.isProdHost()) {
+          console.warn('[LyokFox] No se pudo cargar CMS desde Supabase — reintentando…');
+          return cms.pullAndApply(true).then(function (retry) {
+            cmsMergedFromCloud = !!(retry && retry.data);
+            bootCore();
+          });
+        }
         bootCore();
       }).catch(function () { bootCore(); });
     } else {
@@ -2168,11 +2175,6 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
-  } else {
-    boot();
-  }
   window.lyokRerender = rerenderContent;
   window.lyokRefreshFx = refreshFxOnly;
   window.lyokRefreshMedia = refreshMediaOnly;
@@ -2195,4 +2197,10 @@
   window.renderHeader = renderHeader;
 
   window.LYOK = LYOK;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 })();

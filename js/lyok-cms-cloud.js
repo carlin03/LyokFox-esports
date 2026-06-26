@@ -10,7 +10,10 @@
   var realtimeChannel = null;
 
   function cfg() {
-    return window.SUPABASE_CONFIG || { url: '', anonKey: '', enabled: false };
+    var c = window.SUPABASE_CONFIG;
+    if (c && c.enabled && c.url && c.anonKey) return c;
+    if (window.SITE && SITE.supabase && SITE.supabase.enabled) return SITE.supabase;
+    return { url: '', anonKey: '', enabled: false };
   }
 
   function isConfigured() {
@@ -96,6 +99,26 @@
     return false;
   }
 
+  function pullViaRest() {
+    var c = cfg();
+    var base = String(c.url || '').replace(/\/$/, '');
+    if (!base || !c.anonKey) return Promise.resolve(null);
+    var restUrl = base + '/rest/v1/site_cms?id=eq.' + CMS_ROW_ID + '&select=payload,updated_at';
+    return fetch(restUrl, {
+      headers: {
+        apikey: c.anonKey,
+        Authorization: 'Bearer ' + c.anonKey,
+        Accept: 'application/json'
+      }
+    }).then(function (r) {
+      if (!r.ok) return null;
+      return r.json();
+    }).then(function (rows) {
+      if (!Array.isArray(rows) || !rows[0]) return null;
+      return handleRemoteRow(rows[0]);
+    }).catch(function () { return null; });
+  }
+
   function handleRemoteRow(row) {
     if (!row || !row.payload) return null;
     var payload = normalizePayload(row.payload);
@@ -109,12 +132,15 @@
   function pull(force) {
     if (!isConfigured()) return Promise.resolve(null);
     if (pullInFlight && !force) return pullInFlight;
-    pullInFlight = getClient().then(function (sb) {
-      if (!sb) return null;
-      return sb.from('site_cms').select('payload, updated_at').eq('id', CMS_ROW_ID).maybeSingle();
-    }).then(function (res) {
-      if (!res || res.error) return null;
-      return handleRemoteRow(res.data);
+    pullInFlight = pullViaRest().then(function (payload) {
+      if (payload) return payload;
+      return getClient().then(function (sb) {
+        if (!sb) return null;
+        return sb.from('site_cms').select('payload, updated_at').eq('id', CMS_ROW_ID).maybeSingle();
+      }).then(function (res) {
+        if (!res || res.error) return null;
+        return handleRemoteRow(res.data);
+      });
     }).catch(function () { return null; }).finally(function () {
       pullInFlight = null;
     });
@@ -138,10 +164,20 @@
     });
   }
 
+  function startPollFallback() {
+    if (window.__lyokCmsPoll) return;
+    window.__lyokCmsPoll = setInterval(function () {
+      if (isConfigured()) pull(true);
+    }, 20000);
+  }
+
   function subscribe() {
     if (!isConfigured() || realtimeChannel) return;
     getClient().then(function (sb) {
-      if (!sb || realtimeChannel) return;
+      if (!sb || realtimeChannel) {
+        startPollFallback();
+        return;
+      }
       realtimeChannel = sb
         .channel('lyokfox-site-cms')
         .on('postgres_changes', {
@@ -152,8 +188,10 @@
         }, function (msg) {
           if (msg.new) handleRemoteRow(msg.new);
         })
-        .subscribe();
-    });
+        .subscribe(function (status) {
+          if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') startPollFallback();
+        });
+    }).catch(function () { startPollFallback(); });
     if (!window.__lyokCmsVisibilityPull) {
       window.__lyokCmsVisibilityPull = true;
       document.addEventListener('visibilitychange', function () {
