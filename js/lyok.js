@@ -6,7 +6,7 @@
     short: 'LyokFox',
     url: 'https://lyokfox.vercel.app',
     email: 'lyokfox@gmail.com',
-    build: '2026.06.26-web',
+    build: '2026.06.26-release',
     est: 2020,
     tagline: 'La astucia del kitsune · El fuego de la competición',
     nav: [

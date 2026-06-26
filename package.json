@@ -7,11 +7,15 @@
     "open:prod": "start http://localhost:3000/index.html",
     "start": "npm run dev",
     "open": "start http://localhost:3000",
-    "stamp": "node scripts/stamp-build.js",
+    "stamp": "node scripts/stamp-build.js web",
+    "stamp:release": "node scripts/stamp-build.js release && node scripts/write-supabase-config.js",
     "seed:cms": "node scripts/seed-site-cms.js",
     "seed:cms:force": "node scripts/seed-site-cms.js --force",
+    "publish": "node scripts/publish-all.js release",
+    "publish:all": "node scripts/publish-all.js release",
     "predeploy": "node scripts/stamp-build.js web && node scripts/write-supabase-config.js",
     "deploy": "npm run predeploy && npx --yes vercel deploy --prod --yes --force --project v0-sports-team-website && npx --yes vercel deploy --prod --yes --force --project lyokfox-esports",
+    "deploy:release": "npx --yes vercel deploy --prod --yes --force --project v0-sports-team-website && npx --yes vercel deploy --prod --yes --force --project lyokfox-esports",
     "deploy:open": "npm run deploy && npm run open"
   }
 }
