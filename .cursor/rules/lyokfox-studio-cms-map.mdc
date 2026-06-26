@@ -30,9 +30,12 @@ alwaysApply: true
 | **`kp_claims`** | Reclamaciones KP por like/RT/comentario |
 | **`contact_messages`** | Mensajes del formulario Contáctanos |
 | **`cms_publish_log`** | Historial de publicaciones Studio (solo admin/service_role) |
+| **`site_cms_snapshots`** | Copia de seguridad automática del CMS en cada publicar |
+| **`user_community_state`** | Progreso KP/comunidad por usuario (sync entre dispositivos) |
+| **`site_health`** | Estado conexión CMS (última publicación, build) |
 | **`leaderboard`** | Vista ranking por `points` (lectura pública) |
 
-Migración maestra: `supabase/migrations/20250626200000_lyokfox_complete_schema.sql`
+Migraciones: `supabase/migrations/20250626200000_lyokfox_complete_schema.sql` + `20250626210000_lyokfox_extended_schema.sql`
 
 **PIN Studio:** `lyokfox` (debe coincidir con `STUDIO_PIN` en Vercel).
 

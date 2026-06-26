@@ -66,25 +66,54 @@ module.exports = async function handler(req, res) {
 
     var rows = await upsertRes.json();
     var row = Array.isArray(rows) ? rows[0] : rows;
+    var publishedAt = row && row.updated_at ? row.updated_at : new Date().toISOString();
+    var buildTag = (body.data && body.data.build) || (typeof body.build === 'string' ? body.build : '');
     try {
-      await fetch(SUPABASE_URL + '/rest/v1/cms_publish_log', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: SERVICE_KEY,
-          Authorization: 'Bearer ' + SERVICE_KEY,
-          Prefer: 'return=minimal'
-        },
-        body: JSON.stringify({
-          cms_id: CMS_ROW_ID,
-          build: (body.data && body.data.build) || '',
-          source: 'studio-api'
+      await Promise.all([
+        fetch(SUPABASE_URL + '/rest/v1/cms_publish_log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SERVICE_KEY,
+            Authorization: 'Bearer ' + SERVICE_KEY,
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({ cms_id: CMS_ROW_ID, build: buildTag, source: 'studio-api' })
+        }),
+        fetch(SUPABASE_URL + '/rest/v1/site_cms_snapshots', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SERVICE_KEY,
+            Authorization: 'Bearer ' + SERVICE_KEY,
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({
+            cms_id: CMS_ROW_ID,
+            payload: payload,
+            build: buildTag,
+            source: 'studio-api'
+          })
+        }),
+        fetch(SUPABASE_URL + '/rest/v1/site_health?id=eq.' + CMS_ROW_ID, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SERVICE_KEY,
+            Authorization: 'Bearer ' + SERVICE_KEY,
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({
+            last_publish_at: publishedAt,
+            build: buildTag,
+            updated_at: publishedAt
+          })
         })
-      });
+      ]);
     } catch (logErr) { /* ignore log errors */ }
     res.status(200).json({
       ok: true,
-      updated_at: row && row.updated_at ? row.updated_at : new Date().toISOString()
+      updated_at: publishedAt
     });
   } catch (err) {
     res.status(500).json({ ok: false, reason: err.message || 'server_error' });

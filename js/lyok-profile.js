@@ -17,7 +17,9 @@
   var cloudUser = null;
 
   function usesCloud() {
-    return !!(window.LyokFoxAuth && LyokFoxAuth.isConfigured && LyokFoxAuth.isConfigured());
+    if (window.LyokFoxAuth && LyokFoxAuth.isConfigured && LyokFoxAuth.isConfigured()) return true;
+    var c = (window.SITE && SITE.supabase) || window.SUPABASE_CONFIG || {};
+    return !!(c.enabled && c.url && c.anonKey && String(c.url).indexOf('TU-PROYECTO') < 0);
   }
 
   function cloudRequired() {

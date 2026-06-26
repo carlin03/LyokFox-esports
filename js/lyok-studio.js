@@ -3297,7 +3297,9 @@
             refresh();
             toast('Publicado — visible en lyokfox.vercel.app, lyokfox-esports y todos los dispositivos');
           } else {
-            toast('No publicado en Supabase: ' + ((r && r.reason) || 'error'));
+            var detail = (r && r.reason) || 'error';
+            if (detail === 'not_configured') detail = 'Supabase no detectado — recarga con Ctrl+Shift+R';
+            toast('No publicado en Supabase: ' + detail);
           }
         }).catch(function () {
           if (btn) btn.disabled = false;

@@ -88,9 +88,16 @@
   function applyToRuntime(payload, source) {
     if (!payload || !payload.data) return false;
     applyToStorage(payload);
-    if (source === 'supabase' && typeof window.replaceStudioEnvelope === 'function') {
-      window.replaceStudioEnvelope(payload);
-      return true;
+    if (source === 'supabase') {
+      if (typeof window.replaceStudioEnvelope === 'function') {
+        window.replaceStudioEnvelope(payload);
+        return true;
+      }
+      if (typeof window.applyStudioEnvelope === 'function') {
+        window.applyStudioEnvelope(payload);
+        return true;
+      }
+      return false;
     }
     if (typeof window.applyStudioEnvelope === 'function') {
       window.applyStudioEnvelope(payload);
@@ -122,11 +129,32 @@
   function handleRemoteRow(row) {
     if (!row || !row.payload) return null;
     var payload = normalizePayload(row.payload);
-    if (!payload) return null;
+    if (!payload || !payload.data) return null;
+    var applied = applyToRuntime(payload, 'supabase');
+    if (!applied) return null;
     writeMeta({ updated_at: row.updated_at || '', source: 'supabase' });
-    applyToRuntime(payload, 'supabase');
     if (typeof window.lyokRerender === 'function') window.lyokRerender();
     return payload;
+  }
+
+  function ping() {
+    if (!isConfigured()) return Promise.resolve({ ok: false, reason: 'not_configured' });
+    var c = cfg();
+    var base = String(c.url || '').replace(/\/$/, '');
+    return fetch(base + '/rest/v1/site_cms?id=eq.' + CMS_ROW_ID + '&select=id,updated_at', {
+      headers: {
+        apikey: c.anonKey,
+        Authorization: 'Bearer ' + c.anonKey,
+        Accept: 'application/json'
+      }
+    }).then(function (r) {
+      var ok = r.ok;
+      window.__lyokSupabaseOnline = ok;
+      return { ok: ok, status: r.status };
+    }).catch(function (e) {
+      window.__lyokSupabaseOnline = false;
+      return { ok: false, reason: e.message || 'network' };
+    });
   }
 
   function pull(force) {
@@ -244,6 +272,9 @@
     pullAndApply: pullAndApply,
     push: push,
     subscribe: subscribe,
-    applyToRuntime: applyToRuntime
+    applyToRuntime: applyToRuntime,
+    ping: ping
   };
+
+  if (isConfigured()) ping();
 })();
