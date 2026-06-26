@@ -11,14 +11,28 @@ alwaysApply: true
 |------|--------|----------------|
 | Runtime | `LYOK_DATA` (global JS) | `js/lyok-data.js` + merge Studio |
 | Local (solo dev) | `localStorage` | `lyokfox_studio_v3` → `{ data, visibility }` |
-| **Fuente de verdad (prod)** | Supabase | `site_cms` fila `id='main'`, columna `payload` |
+| **Fuente de verdad (prod)** | Supabase | Ver tablas abajo |
 | Publicar | Studio → `LyokCmsCloud.push` → `POST /api/studio-publish` (PIN) | service_role en Vercel |
 | Leer web | `LyokCmsCloud.pullAndApply` al boot + Realtime `subscribe()` | `replaceStudioEnvelope` (reemplazo total, no merge) |
 | Prod sin nube | No fallback localStorage CMS | `isProdHost()` + `isConfigured()` → solo Supabase |
 | Cuentas (prod) | Supabase Auth + `profiles` | `cloudRequired()` bloquea auth local en producción |
 | Backup manual | Studio → Backup & restaurar | export/import JSON; import en nube pide confirmación |
 
-**Modo 100% nube:** En lyokfox.vercel.app / lyokfox-esports.vercel.app el CMS y las cuentas vienen **solo** de Supabase. Al pulsar **Publicar** en Studio → `site_cms` → Realtime actualiza todas las pestañas y dominios sin redeploy. GitHub/Vercel solo despliegan **código** (HTML/CSS/JS); el contenido editable vive en Supabase. Reseed: `npm run seed:cms:force`.
+**Modo 100% nube:** En lyokfox.vercel.app / lyokfox-esports.vercel.app el CMS y las cuentas vienen **solo** de Supabase. Al pulsar **Publicar** en Studio → `site_cms` → Realtime actualiza todas las pestañas y dominios sin redeploy. Reseed: `npm run seed:cms:force`.
+
+## Tablas Supabase (`public`)
+
+| Tabla | Para qué |
+|-------|----------|
+| **`site_cms`** | Todo el CMS Studio (`id=main`, columna `payload` JSON) |
+| **`profiles`** | Cuentas camada (nickname, KP, avatar, `camada_data`) |
+| **`twitter_posts`** | Posts de X para KP |
+| **`kp_claims`** | Reclamaciones KP por like/RT/comentario |
+| **`contact_messages`** | Mensajes del formulario Contáctanos |
+| **`cms_publish_log`** | Historial de publicaciones Studio (solo admin/service_role) |
+| **`leaderboard`** | Vista ranking por `points` (lectura pública) |
+
+Migración maestra: `supabase/migrations/20250626200000_lyokfox_complete_schema.sql`
 
 **PIN Studio:** `lyokfox` (debe coincidir con `STUDIO_PIN` en Vercel).
 

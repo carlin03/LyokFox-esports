@@ -66,6 +66,22 @@ module.exports = async function handler(req, res) {
 
     var rows = await upsertRes.json();
     var row = Array.isArray(rows) ? rows[0] : rows;
+    try {
+      await fetch(SUPABASE_URL + '/rest/v1/cms_publish_log', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SERVICE_KEY,
+          Authorization: 'Bearer ' + SERVICE_KEY,
+          Prefer: 'return=minimal'
+        },
+        body: JSON.stringify({
+          cms_id: CMS_ROW_ID,
+          build: (body.data && body.data.build) || '',
+          source: 'studio-api'
+        })
+      });
+    } catch (logErr) { /* ignore log errors */ }
     res.status(200).json({
       ok: true,
       updated_at: row && row.updated_at ? row.updated_at : new Date().toISOString()

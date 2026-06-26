@@ -6,7 +6,7 @@
     short: 'LyokFox',
     url: 'https://lyokfox.vercel.app',
     email: 'lyokfox@gmail.com',
-    build: '2026.06.26-sync',
+    build: '2026.06.26-web',
     est: 2020,
     tagline: 'La astucia del kitsune · El fuego de la competición',
     nav: [
@@ -1901,6 +1901,26 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var fd = new FormData(form);
+      var cfg = (window.SITE && SITE.supabase) || window.SUPABASE_CONFIG || {};
+      if (cfg.enabled && cfg.url && cfg.anonKey) {
+        var base = String(cfg.url).replace(/\/$/, '');
+        fetch(base + '/rest/v1/contact_messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: cfg.anonKey,
+            Authorization: 'Bearer ' + cfg.anonKey,
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({
+            name: String(fd.get('nombre') || '').slice(0, 120),
+            email: String(fd.get('email') || '').slice(0, 200),
+            tipo: String(fd.get('tipo') || 'general').slice(0, 80),
+            message: String(fd.get('mensaje') || '').slice(0, 4000),
+            page_url: location.href
+          })
+        }).catch(function () { /* offline */ });
+      }
       var subject = encodeURIComponent('LyokFox — ' + (fd.get('tipo') || 'Contacto'));
       var body = encodeURIComponent(
         'Nombre: ' + fd.get('nombre') + '\n' +
