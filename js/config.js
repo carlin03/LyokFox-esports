@@ -5,7 +5,7 @@ var SITE = {
   collective: 'camada',
   collectiveLabel: 'La camada kitsune',
   est: 2020,
-  build: '2026.06.25-web',
+  build: '2026.06.26-web',
   banner: 'img/banner-oficial.png',
   email: 'lyokfox@gmail.com',
   /* Solo referencia deploy — la web usa rutas relativas en todos los entornos */
@@ -197,3 +197,15 @@ SITE.normalizeHref = function (href) {
   if (!matched && path.indexOf('.') === -1 && path) path = path + '.html';
   return path + query + hash;
 };
+
+/* Supabase — clave anon pública (RLS protege datos). Debe estar en el repo para deploy GitHub. */
+SITE.supabase = {
+  url: 'https://paljzienuwokoifowjxf.supabase.co',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBhbGp6aWVudXdva29pZm93anhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzczNjIsImV4cCI6MjA5Nzc1MzM2Mn0.Udpd88jKmT8MIDCbO2VMws6F4RJNJEpm119c5zorvp4',
+  enabled: true,
+  cloudOnly: true
+};
+
+if (typeof window !== 'undefined') {
+  window.SUPABASE_CONFIG = Object.assign({}, SITE.supabase, window.SUPABASE_CONFIG || {});
+}

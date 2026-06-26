@@ -154,6 +154,15 @@
         })
         .subscribe();
     });
+    if (!window.__lyokCmsVisibilityPull) {
+      window.__lyokCmsVisibilityPull = true;
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden && isConfigured()) pull(true);
+      });
+      window.addEventListener('focus', function () {
+        if (isConfigured()) pull(true);
+      });
+    }
   }
 
   function push(saved, pin) {

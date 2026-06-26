@@ -2,7 +2,6 @@
 .netlify
 node_modules
 js/supabase-config.local.js
-js/supabase-config.js
 
 .vercel
 .env*
